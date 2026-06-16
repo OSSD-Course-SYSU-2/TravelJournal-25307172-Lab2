@@ -1,0 +1,732 @@
+if (!("finalizeConstruction" in ViewPU.prototype)) {
+    Reflect.set(ViewPU.prototype, "finalizeConstruction", () => { });
+}
+interface Index_Params {
+    provinceModel?: ProvinceModel;
+    continuationHelper?: ContinuationHelper;
+    settings?: RenderingContextSettings;
+    context2d?: CanvasRenderingContext2D;
+    displayWidth?: number;
+    canvasHeight?: number;
+    provinces?: Province[];
+    toastMsg?: string;
+    showToast?: boolean;
+    showActionDialog?: boolean;
+    actionProvinceId?: string;
+    actionProvinceName?: string;
+    isDragging?: boolean;
+    draggingProvinceId?: string;
+    dragStartX?: number;
+    dragStartY?: number;
+    dragOrigCx?: number;
+    dragOrigCy?: number;
+    dragMoved?: boolean;
+    longPressTimer?: number;
+}
+import type common from "@ohos:app.ability.common";
+import router from "@ohos:router";
+import { ProvinceModel, MAP_LOGICAL_WIDTH, MAP_LOGICAL_HEIGHT } from "@normalized:N&&&entry/src/main/ets/model/DataModel&";
+import type { Province } from "@normalized:N&&&entry/src/main/ets/model/DataModel&";
+import { pointInEllipse } from "@normalized:N&&&entry/src/main/ets/common/PointInPolygon&";
+import { ContinuationHelper } from "@normalized:N&&&entry/src/main/ets/common/ContinuationHelper&";
+// ==================== 颜色常量 ====================
+const COLOR_BG = '#FFF9F0'; // 画布背景色
+const COLOR_LIGHTED = '#F5A623'; // 打卡后的填充色（金色）
+const COLOR_STROKE = '#555555'; // 省份描边色
+const COLOR_DRAG_STROKE = '#000000'; // 拖动时的描边色（黑色）
+const COLOR_TEXT = '#333333'; // 省份名称文字色（未点亮）
+const COLOR_TEXT_LIGHTED = '#FFFFFF'; // 省份名称文字色（已点亮）
+const COLOR_CHECK = '#FFFFFF'; // 打勾图标色
+class Index extends ViewPU {
+    constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
+        super(parent, __localStorage, elmtId, extraInfo);
+        if (typeof paramsLambda === "function") {
+            this.paramsGenerator_ = paramsLambda;
+        }
+        this.provinceModel = ProvinceModel.getInstance();
+        this.continuationHelper = ContinuationHelper.getInstance();
+        this.settings = new RenderingContextSettings(true);
+        this.context2d = new CanvasRenderingContext2D(this.settings);
+        this.__displayWidth = new ObservedPropertySimplePU(360, this, "displayWidth");
+        this.__canvasHeight = new ObservedPropertySimplePU(405, this, "canvasHeight");
+        this.__provinces = new ObservedPropertyObjectPU([], this, "provinces");
+        this.__toastMsg = new ObservedPropertySimplePU('', this, "toastMsg");
+        this.__showToast = new ObservedPropertySimplePU(false, this, "showToast");
+        this.__showActionDialog = new ObservedPropertySimplePU(false, this, "showActionDialog");
+        this.__actionProvinceId = new ObservedPropertySimplePU('', this, "actionProvinceId");
+        this.__actionProvinceName = new ObservedPropertySimplePU('', this, "actionProvinceName");
+        this.isDragging = false;
+        this.draggingProvinceId = '';
+        this.dragStartX = 0;
+        this.dragStartY = 0;
+        this.dragOrigCx = 0;
+        this.dragOrigCy = 0;
+        this.dragMoved = false;
+        this.longPressTimer = -1;
+        this.setInitiallyProvidedValue(params);
+        this.finalizeConstruction();
+    }
+    setInitiallyProvidedValue(params: Index_Params) {
+        if (params.provinceModel !== undefined) {
+            this.provinceModel = params.provinceModel;
+        }
+        if (params.continuationHelper !== undefined) {
+            this.continuationHelper = params.continuationHelper;
+        }
+        if (params.settings !== undefined) {
+            this.settings = params.settings;
+        }
+        if (params.context2d !== undefined) {
+            this.context2d = params.context2d;
+        }
+        if (params.displayWidth !== undefined) {
+            this.displayWidth = params.displayWidth;
+        }
+        if (params.canvasHeight !== undefined) {
+            this.canvasHeight = params.canvasHeight;
+        }
+        if (params.provinces !== undefined) {
+            this.provinces = params.provinces;
+        }
+        if (params.toastMsg !== undefined) {
+            this.toastMsg = params.toastMsg;
+        }
+        if (params.showToast !== undefined) {
+            this.showToast = params.showToast;
+        }
+        if (params.showActionDialog !== undefined) {
+            this.showActionDialog = params.showActionDialog;
+        }
+        if (params.actionProvinceId !== undefined) {
+            this.actionProvinceId = params.actionProvinceId;
+        }
+        if (params.actionProvinceName !== undefined) {
+            this.actionProvinceName = params.actionProvinceName;
+        }
+        if (params.isDragging !== undefined) {
+            this.isDragging = params.isDragging;
+        }
+        if (params.draggingProvinceId !== undefined) {
+            this.draggingProvinceId = params.draggingProvinceId;
+        }
+        if (params.dragStartX !== undefined) {
+            this.dragStartX = params.dragStartX;
+        }
+        if (params.dragStartY !== undefined) {
+            this.dragStartY = params.dragStartY;
+        }
+        if (params.dragOrigCx !== undefined) {
+            this.dragOrigCx = params.dragOrigCx;
+        }
+        if (params.dragOrigCy !== undefined) {
+            this.dragOrigCy = params.dragOrigCy;
+        }
+        if (params.dragMoved !== undefined) {
+            this.dragMoved = params.dragMoved;
+        }
+        if (params.longPressTimer !== undefined) {
+            this.longPressTimer = params.longPressTimer;
+        }
+    }
+    updateStateVars(params: Index_Params) {
+    }
+    purgeVariableDependenciesOnElmtId(rmElmtId) {
+        this.__displayWidth.purgeDependencyOnElmtId(rmElmtId);
+        this.__canvasHeight.purgeDependencyOnElmtId(rmElmtId);
+        this.__provinces.purgeDependencyOnElmtId(rmElmtId);
+        this.__toastMsg.purgeDependencyOnElmtId(rmElmtId);
+        this.__showToast.purgeDependencyOnElmtId(rmElmtId);
+        this.__showActionDialog.purgeDependencyOnElmtId(rmElmtId);
+        this.__actionProvinceId.purgeDependencyOnElmtId(rmElmtId);
+        this.__actionProvinceName.purgeDependencyOnElmtId(rmElmtId);
+    }
+    aboutToBeDeleted() {
+        this.__displayWidth.aboutToBeDeleted();
+        this.__canvasHeight.aboutToBeDeleted();
+        this.__provinces.aboutToBeDeleted();
+        this.__toastMsg.aboutToBeDeleted();
+        this.__showToast.aboutToBeDeleted();
+        this.__showActionDialog.aboutToBeDeleted();
+        this.__actionProvinceId.aboutToBeDeleted();
+        this.__actionProvinceName.aboutToBeDeleted();
+        SubscriberManager.Get().delete(this.id__());
+        this.aboutToBeDeletedInternal();
+    }
+    private provinceModel: ProvinceModel;
+    private continuationHelper: ContinuationHelper;
+    private settings: RenderingContextSettings;
+    private context2d: CanvasRenderingContext2D;
+    // Canvas 实际显示宽度（屏幕宽度）
+    private __displayWidth: ObservedPropertySimplePU<number>;
+    get displayWidth() {
+        return this.__displayWidth.get();
+    }
+    set displayWidth(newValue: number) {
+        this.__displayWidth.set(newValue);
+    }
+    // Canvas 实际高度（按逻辑宽高比计算）
+    private __canvasHeight: ObservedPropertySimplePU<number>;
+    get canvasHeight() {
+        return this.__canvasHeight.get();
+    }
+    set canvasHeight(newValue: number) {
+        this.__canvasHeight.set(newValue);
+    }
+    // 省份数据（响应式）
+    private __provinces: ObservedPropertyObjectPU<Province[]>;
+    get provinces() {
+        return this.__provinces.get();
+    }
+    set provinces(newValue: Province[]) {
+        this.__provinces.set(newValue);
+    }
+    // Toast 提示
+    private __toastMsg: ObservedPropertySimplePU<string>;
+    get toastMsg() {
+        return this.__toastMsg.get();
+    }
+    set toastMsg(newValue: string) {
+        this.__toastMsg.set(newValue);
+    }
+    private __showToast: ObservedPropertySimplePU<boolean>;
+    get showToast() {
+        return this.__showToast.get();
+    }
+    set showToast(newValue: boolean) {
+        this.__showToast.set(newValue);
+    }
+    // 操作对话框
+    private __showActionDialog: ObservedPropertySimplePU<boolean>;
+    get showActionDialog() {
+        return this.__showActionDialog.get();
+    }
+    set showActionDialog(newValue: boolean) {
+        this.__showActionDialog.set(newValue);
+    }
+    private __actionProvinceId: ObservedPropertySimplePU<string>;
+    get actionProvinceId() {
+        return this.__actionProvinceId.get();
+    }
+    set actionProvinceId(newValue: string) {
+        this.__actionProvinceId.set(newValue);
+    }
+    private __actionProvinceName: ObservedPropertySimplePU<string>;
+    get actionProvinceName() {
+        return this.__actionProvinceName.get();
+    }
+    set actionProvinceName(newValue: string) {
+        this.__actionProvinceName.set(newValue);
+    }
+    // 拖动状态
+    private isDragging: boolean;
+    private draggingProvinceId: string;
+    private dragStartX: number;
+    private dragStartY: number;
+    private dragOrigCx: number;
+    private dragOrigCy: number;
+    private dragMoved: boolean;
+    private longPressTimer: number;
+    // ==================== 生命周期 ====================
+    async aboutToAppear(): Promise<void> {
+        const context = getContext(this) as common.UIAbilityContext;
+        await this.provinceModel.init(context);
+        this.refreshProvinces();
+        // 更新自由流转回调（首页不追踪具体省份）
+        this.continuationHelper.updateCallbacks(() => {
+            return { provinceId: '', timestamp: Date.now() };
+        }, (data) => {
+            if (data.provinceId) {
+                AppStorage.setOrCreate<string>('continuation_province_id', data.provinceId);
+                // 流转恢复后自动跳转到省份详情页
+                router.pushUrl({
+                    url: 'pages/ProvinceDetail',
+                    params: { provinceId: data.provinceId }
+                });
+            }
+        });
+        // 检查是否有流转恢复数据，自动跳转到对应省份详情页
+        const continuationProvinceId = AppStorage.get<string>('continuation_province_id');
+        if (continuationProvinceId) {
+            AppStorage.setOrCreate<string>('continuation_province_id', '');
+            router.pushUrl({
+                url: 'pages/ProvinceDetail',
+                params: { provinceId: continuationProvinceId }
+            });
+        }
+    }
+    /** 刷新省份数据 */
+    refreshProvinces(): void {
+        this.provinces = [...this.provinceModel.getProvinces()];
+        this.drawMap();
+    }
+    // ==================== 缩放计算 ====================
+    /** 根据显示宽度计算缩放比例 */
+    getScale(): number {
+        return this.displayWidth / MAP_LOGICAL_WIDTH;
+    }
+    // ==================== 地图绘制 ====================
+    /** 绘制整个地图 */
+    drawMap(): void {
+        const ctx = this.context2d;
+        if (!ctx) {
+            return;
+        }
+        const scale = this.getScale();
+        const w = this.displayWidth;
+        const h = this.canvasHeight;
+        // 清空画布
+        ctx.clearRect(0, 0, w, h);
+        // 绘制背景
+        ctx.fillStyle = COLOR_BG;
+        ctx.fillRect(0, 0, w, h);
+        // 绘制每个省份
+        for (const province of this.provinces) {
+            this.drawProvince(ctx, province, scale);
+        }
+    }
+    /** 绘制单个省份（椭圆） */
+    drawProvince(ctx: CanvasRenderingContext2D, province: Province, scale: number): void {
+        const cx = province.cx * scale;
+        const cy = province.cy * scale;
+        const rx = province.rx * scale;
+        const ry = province.ry * scale;
+        // 绘制椭圆
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+        // 填充颜色：未点亮用省份莫兰迪色，已点亮用打卡金色
+        if (province.isLighted) {
+            ctx.fillStyle = COLOR_LIGHTED;
+        }
+        else {
+            ctx.fillStyle = province.color;
+        }
+        ctx.fill();
+        // 描边：拖动中的省份用高亮色
+        if (this.isDragging && this.draggingProvinceId === province.id) {
+            ctx.strokeStyle = COLOR_DRAG_STROKE;
+            ctx.lineWidth = 3;
+        }
+        else {
+            ctx.strokeStyle = COLOR_STROKE;
+            ctx.lineWidth = 1.5;
+        }
+        ctx.stroke();
+        // 绘制省份名称 - 根据椭圆面积动态调整字体，面积大→字号大
+        // 用椭圆短轴作为基准，系数 1.8，下限 16px，上限 56px
+        const minRadius = Math.min(rx, ry);
+        let fontSize = Math.round(minRadius * 1.8);
+        fontSize = Math.max(16, Math.min(56, fontSize));
+        ctx.fillStyle = province.isLighted ? COLOR_TEXT_LIGHTED : COLOR_TEXT;
+        ctx.font = (province.isLighted ? 'bold ' : '') + fontSize + 'px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(province.name, cx, cy);
+        // 已点亮省份绘制打勾图标
+        if (province.isLighted) {
+            const checkSize = Math.max(10, Math.round(minRadius * 0.7));
+            ctx.fillStyle = COLOR_CHECK;
+            ctx.font = 'bold ' + checkSize + 'px sans-serif';
+            ctx.fillText('\u2714', cx + rx * 0.6, cy - ry * 0.6); // ✔
+        }
+    }
+    // ==================== 触摸事件处理 ====================
+    /** 查找触摸点所在的省份 */
+    findProvinceAt(normX: number, normY: number): Province | null {
+        // 从后往前检测，优先小省份
+        for (let i = this.provinces.length - 1; i >= 0; i--) {
+            const province = this.provinces[i];
+            if (pointInEllipse(normX, normY, province.cx, province.cy, province.rx, province.ry)) {
+                return province;
+            }
+        }
+        return null;
+    }
+    /** 触摸开始 */
+    onTouchDown(x: number, y: number): void {
+        const scale = this.getScale();
+        const normX = x / scale;
+        const normY = y / scale;
+        const province = this.findProvinceAt(normX, normY);
+        if (!province) {
+            return;
+        }
+        // 记录拖动起始信息
+        this.draggingProvinceId = province.id;
+        this.dragStartX = normX;
+        this.dragStartY = normY;
+        this.dragOrigCx = province.cx;
+        this.dragOrigCy = province.cy;
+        this.dragMoved = false;
+        this.isDragging = false;
+        // 启动长按计时器（500ms 后进入拖动模式）
+        this.longPressTimer = setTimeout(() => {
+            this.isDragging = true;
+            this.drawMap();
+        }, 500);
+    }
+    /** 触摸移动 */
+    onTouchMove(x: number, y: number): void {
+        if (!this.draggingProvinceId) {
+            return;
+        }
+        const scale = this.getScale();
+        const normX = x / scale;
+        const normY = y / scale;
+        // 计算移动距离
+        const dx = normX - this.dragStartX;
+        const dy = normY - this.dragStartY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        // 如果移动距离超过阈值，取消长按计时器，直接进入拖动
+        if (distance > 3 && !this.isDragging) {
+            clearTimeout(this.longPressTimer);
+            this.isDragging = true;
+        }
+        if (this.isDragging) {
+            this.dragMoved = true;
+            // 更新省份位置
+            const province = this.provinces.find(p => p.id === this.draggingProvinceId);
+            if (province) {
+                let newCx = this.dragOrigCx + dx;
+                let newCy = this.dragOrigCy + dy;
+                // 限制椭圆不能拖出画布边界
+                newCx = Math.max(province.rx, Math.min(MAP_LOGICAL_WIDTH - province.rx, newCx));
+                newCy = Math.max(province.ry, Math.min(MAP_LOGICAL_HEIGHT - province.ry, newCy));
+                province.cx = newCx;
+                province.cy = newCy;
+                this.drawMap();
+            }
+        }
+    }
+    /** 触摸结束 */
+    async onTouchUp(): Promise<void> {
+        // 清除长按计时器
+        if (this.longPressTimer !== -1) {
+            clearTimeout(this.longPressTimer);
+            this.longPressTimer = -1;
+        }
+        if (this.isDragging && this.dragMoved) {
+            // 拖动结束 → 保存位置
+            const province = this.provinces.find(p => p.id === this.draggingProvinceId);
+            if (province) {
+                await this.provinceModel.updateProvincePosition(province.id, province.cx, province.cy);
+                this.showToastMsg(`已移动 ${province.name}`);
+            }
+        }
+        else if (!this.dragMoved && this.draggingProvinceId) {
+            // 没有拖动 → 当作点击处理
+            const province = this.provinces.find(p => p.id === this.draggingProvinceId);
+            if (province) {
+                await this.onProvinceClick(province);
+            }
+        }
+        // 重置拖动状态
+        this.isDragging = false;
+        this.draggingProvinceId = '';
+        this.dragMoved = false;
+        this.drawMap();
+    }
+    // ==================== 点击处理 ====================
+    /** 省份被点击 */
+    async onProvinceClick(province: Province): Promise<void> {
+        if (province.isLighted) {
+            // 已点亮 → 弹出操作对话框（取消打卡 / 查看手账）
+            this.actionProvinceId = province.id;
+            this.actionProvinceName = province.name;
+            this.showActionDialog = true;
+        }
+        else {
+            // 未点亮 → 点亮该省份
+            await this.provinceModel.lightProvince(province.id);
+            this.refreshProvinces();
+            this.showToastMsg(`已点亮 ${province.name}！`);
+        }
+    }
+    // ==================== 工具方法 ====================
+    /** 显示 Toast 提示 */
+    showToastMsg(msg: string): void {
+        this.toastMsg = msg;
+        this.showToast = true;
+        setTimeout(() => {
+            this.showToast = false;
+        }, 2000);
+    }
+    // ==================== 构建界面 ====================
+    initialRender() {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Stack.create();
+            Stack.width('100%');
+            Stack.height('100%');
+        }, Stack);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.width('100%');
+            Column.height('100%');
+        }, Column);
+        // 顶部标题栏
+        this.TitleBar.bind(this)();
+        // Canvas 地图区域（填满中间区域）
+        this.MapArea.bind(this)();
+        // 底部统计信息
+        this.StatsBar.bind(this)();
+        Column.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            If.create();
+            // Toast 提示
+            if (this.showToast) {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    this.ToastView.bind(this)();
+                });
+            }
+            // 操作对话框
+            else {
+                this.ifElseBranchUpdateFunction(1, () => {
+                });
+            }
+        }, If);
+        If.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            If.create();
+            // 操作对话框
+            if (this.showActionDialog) {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    this.ActionDialogView.bind(this)();
+                });
+            }
+            else {
+                this.ifElseBranchUpdateFunction(1, () => {
+                });
+            }
+        }, If);
+        If.pop();
+        Stack.pop();
+    }
+    // ==================== 子组件 ====================
+    /** 顶部标题栏 */
+    TitleBar(parent = null) {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Row.create();
+            Row.width('100%');
+            Row.height(56);
+            Row.backgroundColor('#FFFFFF');
+            Row.shadow({ radius: 2, color: '#1A000000', offsetY: 1 });
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('TravelJournal');
+            Text.fontSize(22);
+            Text.fontWeight(FontWeight.Bold);
+            Text.fontColor('#333333');
+            Text.margin({ left: 16 });
+        }, Text);
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Blank.create();
+        }, Blank);
+        Blank.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // 自由流转按钮
+            Text.create('\u21C4');
+            // 自由流转按钮
+            Text.fontSize(20);
+            // 自由流转按钮
+            Text.fontColor('#666666');
+            // 自由流转按钮
+            Text.margin({ right: 12 });
+            // 自由流转按钮
+            Text.onClick(() => {
+                this.continuationHelper.startContinuation();
+            });
+        }, Text);
+        // 自由流转按钮
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('长按拖动可移动省份');
+            Text.fontSize(13);
+            Text.fontColor('#999999');
+            Text.margin({ right: 16 });
+        }, Text);
+        Text.pop();
+        Row.pop();
+    }
+    /** Canvas 地图区域（填满中间区域，与上下栏平齐） */
+    MapArea(parent = null) {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Canvas.create(this.context2d);
+            Canvas.width(this.displayWidth);
+            Canvas.height(this.canvasHeight);
+            Canvas.layoutWeight(1);
+            Canvas.backgroundColor(COLOR_BG);
+            Canvas.onReady(() => {
+                this.drawMap();
+            });
+            Canvas.onTouch((event: TouchEvent) => {
+                if (event.type === TouchType.Down) {
+                    this.onTouchDown(event.touches[0].x, event.touches[0].y);
+                }
+                else if (event.type === TouchType.Move) {
+                    this.onTouchMove(event.touches[0].x, event.touches[0].y);
+                }
+                else if (event.type === TouchType.Up || event.type === TouchType.Cancel) {
+                    this.onTouchUp();
+                }
+            });
+            Canvas.onAreaChange((oldValue: Area, newValue: Area) => {
+                // 监听容器尺寸变化，实现多端自适应
+                // Canvas 宽度 = 容器宽度，高度按逻辑宽高比计算
+                const newWidth = newValue.width as number;
+                const newHeight = newValue.height as number;
+                if (newWidth > 0 && newHeight > 0) {
+                    this.displayWidth = newWidth;
+                    // 优先按宽度缩放；如果按宽度缩放后高度超出容器，则按高度缩放
+                    const scaleByWidth = newWidth / MAP_LOGICAL_WIDTH;
+                    const scaleByHeight = newHeight / MAP_LOGICAL_HEIGHT;
+                    const scale = Math.min(scaleByWidth, scaleByHeight);
+                    this.canvasHeight = Math.round(MAP_LOGICAL_HEIGHT * scale);
+                    this.drawMap();
+                }
+            });
+        }, Canvas);
+        Canvas.pop();
+    }
+    /** 底部统计栏 */
+    StatsBar(parent = null) {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Row.create();
+            Row.width('100%');
+            Row.height(48);
+            Row.justifyContent(FlexAlign.Center);
+            Row.backgroundColor('#FFFFFF');
+            Row.shadow({ radius: 2, color: '#1A000000', offsetY: -1 });
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create(`已点亮 ${this.provinces.filter(p => p.isLighted).length} / ${this.provinces.length} 个省级行政区`);
+            Text.fontSize(14);
+            Text.fontColor('#666666');
+        }, Text);
+        Text.pop();
+        Row.pop();
+    }
+    /** Toast 提示 */
+    ToastView(parent = null) {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.width('100%');
+            Column.justifyContent(FlexAlign.Center);
+            Column.position({ x: 0, y: '50%' });
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create(this.toastMsg);
+            Text.fontSize(14);
+            Text.fontColor('#FFFFFF');
+            Text.padding({ left: 20, right: 20, top: 10, bottom: 10 });
+            Text.backgroundColor('#CC333333');
+            Text.borderRadius(20);
+        }, Text);
+        Text.pop();
+        Column.pop();
+    }
+    /** 操作对话框（取消打卡 / 查看手账） */
+    ActionDialogView(parent = null) {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.width('100%');
+            Column.height('100%');
+            Column.justifyContent(FlexAlign.Center);
+            Column.backgroundColor('#66000000');
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.width('72%');
+            Column.backgroundColor('#FFFFFF');
+            Column.borderRadius(16);
+            Column.alignItems(HorizontalAlign.Center);
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create(this.actionProvinceName);
+            Text.fontSize(18);
+            Text.fontWeight(FontWeight.Bold);
+            Text.fontColor('#333333');
+            Text.margin({ top: 24, bottom: 20 });
+        }, Text);
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // 查看手账按钮
+            Button.createWithLabel('查看手账');
+            // 查看手账按钮
+            Button.width('80%');
+            // 查看手账按钮
+            Button.height(44);
+            // 查看手账按钮
+            Button.fontSize(16);
+            // 查看手账按钮
+            Button.fontColor('#FFFFFF');
+            // 查看手账按钮
+            Button.backgroundColor('#F5A623');
+            // 查看手账按钮
+            Button.borderRadius(8);
+            // 查看手账按钮
+            Button.onClick(() => {
+                this.showActionDialog = false;
+                router.pushUrl({
+                    url: 'pages/ProvinceDetail',
+                    params: { provinceId: this.actionProvinceId }
+                });
+            });
+        }, Button);
+        // 查看手账按钮
+        Button.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // 取消打卡按钮
+            Button.createWithLabel('取消打卡');
+            // 取消打卡按钮
+            Button.width('80%');
+            // 取消打卡按钮
+            Button.height(44);
+            // 取消打卡按钮
+            Button.fontSize(16);
+            // 取消打卡按钮
+            Button.fontColor('#E74C3C');
+            // 取消打卡按钮
+            Button.backgroundColor('#FFFFFF');
+            // 取消打卡按钮
+            Button.borderRadius(8);
+            // 取消打卡按钮
+            Button.border({ width: 1, color: '#E74C3C' });
+            // 取消打卡按钮
+            Button.margin({ top: 12, bottom: 24 });
+            // 取消打卡按钮
+            Button.onClick(async () => {
+                this.showActionDialog = false;
+                await this.provinceModel.unlightProvince(this.actionProvinceId);
+                this.refreshProvinces();
+                this.showToastMsg(`已取消 ${this.actionProvinceName} 的打卡`);
+            });
+        }, Button);
+        // 取消打卡按钮
+        Button.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // 关闭按钮
+            Text.create('关闭');
+            // 关闭按钮
+            Text.fontSize(14);
+            // 关闭按钮
+            Text.fontColor('#999999');
+            // 关闭按钮
+            Text.margin({ bottom: 16 });
+            // 关闭按钮
+            Text.onClick(() => {
+                this.showActionDialog = false;
+            });
+        }, Text);
+        // 关闭按钮
+        Text.pop();
+        Column.pop();
+        Column.pop();
+    }
+    rerender() {
+        this.updateDirtyElements();
+    }
+    static getEntryName(): string {
+        return "Index";
+    }
+}
+registerNamedRoute(() => new Index(undefined, {}), "", { bundleName: "com.example.traveljournal", moduleName: "entry", pagePath: "pages/Index", pageFullPath: "entry/src/main/ets/pages/Index", integratedHsp: "false", moduleType: "followWithHap" });

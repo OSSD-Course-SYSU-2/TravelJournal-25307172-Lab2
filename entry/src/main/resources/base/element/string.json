@@ -1,0 +1,8 @@
+{
+  "string": [
+    { "name": "module_desc", "value": "TravelJournalCanvas Entry Module" },
+    { "name": "ability_desc", "value": "TravelJournalCanvas Main Ability" },
+    { "name": "ability_label", "value": "TravelJournal" },
+    { "name": "distributed_reason", "value": "用于支持多设备间的自由流转功能" }
+  ]
+}
