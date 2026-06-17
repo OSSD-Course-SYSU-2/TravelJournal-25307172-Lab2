@@ -636,7 +636,7 @@ class ProvinceDetail extends ViewPU {
                             const uri = _item;
                             this.observeComponentCreation2((elmtId, isInitialRender) => {
                                 Image.create(this.fileHelper.toImageUri(uri));
-                                Image.width(120);
+                                Image.width('30%');
                                 Image.height(120);
                                 Image.borderRadius(8);
                                 Image.objectFit(ImageFit.Cover);
@@ -881,7 +881,7 @@ class ProvinceDetail extends ViewPU {
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Column.create();
-            Column.width('260');
+            Column.width('72%');
             Column.padding(24);
             Column.backgroundColor('#FFFFFF');
             Column.borderRadius(16);

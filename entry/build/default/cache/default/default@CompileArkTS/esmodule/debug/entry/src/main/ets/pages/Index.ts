@@ -7,7 +7,7 @@ interface Index_Params {
     settings?: RenderingContextSettings;
     context2d?: CanvasRenderingContext2D;
     displayWidth?: number;
-    canvasHeight?: number;
+    displayHeight?: number;
     provinces?: Province[];
     toastMsg?: string;
     showToast?: boolean;
@@ -25,7 +25,7 @@ interface Index_Params {
 }
 import type common from "@ohos:app.ability.common";
 import router from "@ohos:router";
-import { ProvinceModel, MAP_LOGICAL_WIDTH, MAP_LOGICAL_HEIGHT } from "@normalized:N&&&entry/src/main/ets/model/DataModel&";
+import { ProvinceModel, BASE_WIDTH, BASE_HEIGHT } from "@normalized:N&&&entry/src/main/ets/model/DataModel&";
 import type { Province } from "@normalized:N&&&entry/src/main/ets/model/DataModel&";
 import { pointInEllipse } from "@normalized:N&&&entry/src/main/ets/common/PointInPolygon&";
 import { ContinuationHelper } from "@normalized:N&&&entry/src/main/ets/common/ContinuationHelper&";
@@ -37,6 +37,13 @@ const COLOR_DRAG_STROKE = '#000000'; // 拖动时的描边色（黑色）
 const COLOR_TEXT = '#333333'; // 省份名称文字色（未点亮）
 const COLOR_TEXT_LIGHTED = '#FFFFFF'; // 省份名称文字色（已点亮）
 const COLOR_CHECK = '#FFFFFF'; // 打勾图标色
+/** 椭圆布局参数 */
+interface EllipseLayout {
+    cx: number;
+    cy: number;
+    rx: number;
+    ry: number;
+}
 class Index extends ViewPU {
     constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
         super(parent, __localStorage, elmtId, extraInfo);
@@ -47,8 +54,8 @@ class Index extends ViewPU {
         this.continuationHelper = ContinuationHelper.getInstance();
         this.settings = new RenderingContextSettings(true);
         this.context2d = new CanvasRenderingContext2D(this.settings);
-        this.__displayWidth = new ObservedPropertySimplePU(360, this, "displayWidth");
-        this.__canvasHeight = new ObservedPropertySimplePU(405, this, "canvasHeight");
+        this.__displayWidth = new ObservedPropertySimplePU(0, this, "displayWidth");
+        this.__displayHeight = new ObservedPropertySimplePU(0, this, "displayHeight");
         this.__provinces = new ObservedPropertyObjectPU([], this, "provinces");
         this.__toastMsg = new ObservedPropertySimplePU('', this, "toastMsg");
         this.__showToast = new ObservedPropertySimplePU(false, this, "showToast");
@@ -82,8 +89,8 @@ class Index extends ViewPU {
         if (params.displayWidth !== undefined) {
             this.displayWidth = params.displayWidth;
         }
-        if (params.canvasHeight !== undefined) {
-            this.canvasHeight = params.canvasHeight;
+        if (params.displayHeight !== undefined) {
+            this.displayHeight = params.displayHeight;
         }
         if (params.provinces !== undefined) {
             this.provinces = params.provinces;
@@ -132,7 +139,7 @@ class Index extends ViewPU {
     }
     purgeVariableDependenciesOnElmtId(rmElmtId) {
         this.__displayWidth.purgeDependencyOnElmtId(rmElmtId);
-        this.__canvasHeight.purgeDependencyOnElmtId(rmElmtId);
+        this.__displayHeight.purgeDependencyOnElmtId(rmElmtId);
         this.__provinces.purgeDependencyOnElmtId(rmElmtId);
         this.__toastMsg.purgeDependencyOnElmtId(rmElmtId);
         this.__showToast.purgeDependencyOnElmtId(rmElmtId);
@@ -142,7 +149,7 @@ class Index extends ViewPU {
     }
     aboutToBeDeleted() {
         this.__displayWidth.aboutToBeDeleted();
-        this.__canvasHeight.aboutToBeDeleted();
+        this.__displayHeight.aboutToBeDeleted();
         this.__provinces.aboutToBeDeleted();
         this.__toastMsg.aboutToBeDeleted();
         this.__showToast.aboutToBeDeleted();
@@ -156,7 +163,7 @@ class Index extends ViewPU {
     private continuationHelper: ContinuationHelper;
     private settings: RenderingContextSettings;
     private context2d: CanvasRenderingContext2D;
-    // Canvas 实际显示宽度（屏幕宽度）
+    // Canvas 实际显示宽度（由 onAreaChange 动态获取）
     private __displayWidth: ObservedPropertySimplePU<number>;
     get displayWidth() {
         return this.__displayWidth.get();
@@ -164,13 +171,13 @@ class Index extends ViewPU {
     set displayWidth(newValue: number) {
         this.__displayWidth.set(newValue);
     }
-    // Canvas 实际高度（按逻辑宽高比计算）
-    private __canvasHeight: ObservedPropertySimplePU<number>;
-    get canvasHeight() {
-        return this.__canvasHeight.get();
+    // Canvas 实际显示高度（由 onAreaChange 动态获取）
+    private __displayHeight: ObservedPropertySimplePU<number>;
+    get displayHeight() {
+        return this.__displayHeight.get();
     }
-    set canvasHeight(newValue: number) {
-        this.__canvasHeight.set(newValue);
+    set displayHeight(newValue: number) {
+        this.__displayHeight.set(newValue);
     }
     // 省份数据（响应式）
     private __provinces: ObservedPropertyObjectPU<Province[]>;
@@ -259,10 +266,63 @@ class Index extends ViewPU {
         this.provinces = [...this.provinceModel.getProvinces()];
         this.drawMap();
     }
-    // ==================== 缩放计算 ====================
-    /** 根据显示宽度计算缩放比例 */
-    getScale(): number {
-        return this.displayWidth / MAP_LOGICAL_WIDTH;
+    // ==================== 动态布局计算 ====================
+    /**
+     * 椭圆尺寸缩放因子
+     * 基准：min(canvasW, canvasH) / 1000
+     * 保证椭圆大小与屏幕尺寸成正比
+     */
+    getSizeScale(): number {
+        if (this.displayWidth <= 0 || this.displayHeight <= 0) {
+            return 1;
+        }
+        return Math.min(this.displayWidth, this.displayHeight) / BASE_HEIGHT;
+    }
+    /**
+     * 椭圆最小水平半径（保证文字可读）
+     * 取 canvasWidth 的 3.5%
+     */
+    getMinRx(): number {
+        return Math.round(this.displayWidth * 0.035);
+    }
+    /**
+     * 椭圆最小垂直半径（保证文字可读）
+     * 取 canvasHeight 的 2.5%
+     */
+    getMinRy(): number {
+        return Math.round(this.displayHeight * 0.025);
+    }
+    /**
+     * 获取省份在当前Canvas上的椭圆参数
+     * 基准坐标按比例映射到实际Canvas尺寸，椭圆半径按sizeScale缩放并保证最小值
+     */
+    getProvinceLayout(province: Province): EllipseLayout {
+        const cx = province.cx / BASE_WIDTH * this.displayWidth;
+        const cy = province.cy / BASE_HEIGHT * this.displayHeight;
+        const sizeScale = this.getSizeScale();
+        const minRx = this.getMinRx();
+        const minRy = this.getMinRy();
+        const rx = Math.max(Math.round(province.rx * sizeScale), minRx);
+        const ry = Math.max(Math.round(province.ry * sizeScale), minRy);
+        const layout: EllipseLayout = { cx, cy, rx, ry };
+        return layout;
+    }
+    // ==================== 拖动边界 ====================
+    /** Canvas左边界（像素） */
+    getBoundsLeft(): number {
+        return 0;
+    }
+    /** Canvas上边界（像素） */
+    getBoundsTop(): number {
+        return 0;
+    }
+    /** Canvas右边界（像素） */
+    getBoundsRight(): number {
+        return this.displayWidth;
+    }
+    /** Canvas下边界（像素） */
+    getBoundsBottom(): number {
+        return this.displayHeight;
     }
     // ==================== 地图绘制 ====================
     /** 绘制整个地图 */
@@ -271,9 +331,11 @@ class Index extends ViewPU {
         if (!ctx) {
             return;
         }
-        const scale = this.getScale();
         const w = this.displayWidth;
-        const h = this.canvasHeight;
+        const h = this.displayHeight;
+        if (w <= 0 || h <= 0) {
+            return;
+        }
         // 清空画布
         ctx.clearRect(0, 0, w, h);
         // 绘制背景
@@ -281,19 +343,20 @@ class Index extends ViewPU {
         ctx.fillRect(0, 0, w, h);
         // 绘制每个省份
         for (const province of this.provinces) {
-            this.drawProvince(ctx, province, scale);
+            this.drawProvince(ctx, province);
         }
     }
     /** 绘制单个省份（椭圆） */
-    drawProvince(ctx: CanvasRenderingContext2D, province: Province, scale: number): void {
-        const cx = province.cx * scale;
-        const cy = province.cy * scale;
-        const rx = province.rx * scale;
-        const ry = province.ry * scale;
+    drawProvince(ctx: CanvasRenderingContext2D, province: Province): void {
+        const layout = this.getProvinceLayout(province);
+        const cx = layout.cx;
+        const cy = layout.cy;
+        const rx = layout.rx;
+        const ry = layout.ry;
         // 绘制椭圆
         ctx.beginPath();
         ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
-        // 填充颜色：未点亮用省份莫兰迪色，已点亮用打卡金色
+        // 填充颜色
         if (province.isLighted) {
             ctx.fillStyle = COLOR_LIGHTED;
         }
@@ -301,7 +364,7 @@ class Index extends ViewPU {
             ctx.fillStyle = province.color;
         }
         ctx.fill();
-        // 描边：拖动中的省份用高亮色
+        // 描边
         if (this.isDragging && this.draggingProvinceId === province.id) {
             ctx.strokeStyle = COLOR_DRAG_STROKE;
             ctx.lineWidth = 3;
@@ -311,8 +374,7 @@ class Index extends ViewPU {
             ctx.lineWidth = 1.5;
         }
         ctx.stroke();
-        // 绘制省份名称 - 根据椭圆面积动态调整字体，面积大→字号大
-        // 用椭圆短轴作为基准，系数 1.8，下限 16px，上限 56px
+        // 绘制省份名称
         const minRadius = Math.min(rx, ry);
         let fontSize = Math.round(minRadius * 1.8);
         fontSize = Math.max(16, Math.min(56, fontSize));
@@ -326,16 +388,16 @@ class Index extends ViewPU {
             const checkSize = Math.max(10, Math.round(minRadius * 0.7));
             ctx.fillStyle = COLOR_CHECK;
             ctx.font = 'bold ' + checkSize + 'px sans-serif';
-            ctx.fillText('\u2714', cx + rx * 0.6, cy - ry * 0.6); // ✔
+            ctx.fillText('\u2714', cx + rx * 0.6, cy - ry * 0.6);
         }
     }
     // ==================== 触摸事件处理 ====================
     /** 查找触摸点所在的省份 */
-    findProvinceAt(normX: number, normY: number): Province | null {
-        // 从后往前检测，优先小省份
+    findProvinceAt(pixelX: number, pixelY: number): Province | null {
         for (let i = this.provinces.length - 1; i >= 0; i--) {
             const province = this.provinces[i];
-            if (pointInEllipse(normX, normY, province.cx, province.cy, province.rx, province.ry)) {
+            const layout = this.getProvinceLayout(province);
+            if (pointInEllipse(pixelX, pixelY, layout.cx, layout.cy, layout.rx, layout.ry)) {
                 return province;
             }
         }
@@ -343,19 +405,17 @@ class Index extends ViewPU {
     }
     /** 触摸开始 */
     onTouchDown(x: number, y: number): void {
-        const scale = this.getScale();
-        const normX = x / scale;
-        const normY = y / scale;
-        const province = this.findProvinceAt(normX, normY);
+        const province = this.findProvinceAt(x, y);
         if (!province) {
             return;
         }
-        // 记录拖动起始信息
+        // 记录拖动起始信息（像素坐标）
         this.draggingProvinceId = province.id;
-        this.dragStartX = normX;
-        this.dragStartY = normY;
-        this.dragOrigCx = province.cx;
-        this.dragOrigCy = province.cy;
+        this.dragStartX = x;
+        this.dragStartY = y;
+        const layout = this.getProvinceLayout(province);
+        this.dragOrigCx = layout.cx;
+        this.dragOrigCy = layout.cy;
         this.dragMoved = false;
         this.isDragging = false;
         // 启动长按计时器（500ms 后进入拖动模式）
@@ -369,12 +429,9 @@ class Index extends ViewPU {
         if (!this.draggingProvinceId) {
             return;
         }
-        const scale = this.getScale();
-        const normX = x / scale;
-        const normY = y / scale;
-        // 计算移动距离
-        const dx = normX - this.dragStartX;
-        const dy = normY - this.dragStartY;
+        // 计算移动距离（像素）
+        const dx = x - this.dragStartX;
+        const dy = y - this.dragStartY;
         const distance = Math.sqrt(dx * dx + dy * dy);
         // 如果移动距离超过阈值，取消长按计时器，直接进入拖动
         if (distance > 3 && !this.isDragging) {
@@ -383,16 +440,21 @@ class Index extends ViewPU {
         }
         if (this.isDragging) {
             this.dragMoved = true;
-            // 更新省份位置
             const province = this.provinces.find(p => p.id === this.draggingProvinceId);
             if (province) {
                 let newCx = this.dragOrigCx + dx;
                 let newCy = this.dragOrigCy + dy;
-                // 限制椭圆不能拖出画布边界
-                newCx = Math.max(province.rx, Math.min(MAP_LOGICAL_WIDTH - province.rx, newCx));
-                newCy = Math.max(province.ry, Math.min(MAP_LOGICAL_HEIGHT - province.ry, newCy));
-                province.cx = newCx;
-                province.cy = newCy;
+                // 限制椭圆不能拖出Canvas边界
+                const boundsLeft = this.getBoundsLeft();
+                const boundsTop = this.getBoundsTop();
+                const boundsRight = this.getBoundsRight();
+                const boundsBottom = this.getBoundsBottom();
+                const layout = this.getProvinceLayout(province);
+                newCx = Math.max(boundsLeft + layout.rx, Math.min(boundsRight - layout.rx, newCx));
+                newCy = Math.max(boundsTop + layout.ry, Math.min(boundsBottom - layout.ry, newCy));
+                // 将像素坐标转换回基准坐标并更新
+                province.cx = newCx / this.displayWidth * BASE_WIDTH;
+                province.cy = newCy / this.displayHeight * BASE_HEIGHT;
                 this.drawMap();
             }
         }
@@ -551,8 +613,7 @@ class Index extends ViewPU {
     MapArea(parent = null) {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Canvas.create(this.context2d);
-            Canvas.width(this.displayWidth);
-            Canvas.height(this.canvasHeight);
+            Canvas.width('100%');
             Canvas.layoutWeight(1);
             Canvas.backgroundColor(COLOR_BG);
             Canvas.onReady(() => {
@@ -571,16 +632,11 @@ class Index extends ViewPU {
             });
             Canvas.onAreaChange((oldValue: Area, newValue: Area) => {
                 // 监听容器尺寸变化，实现多端自适应
-                // Canvas 宽度 = 容器宽度，高度按逻辑宽高比计算
                 const newWidth = newValue.width as number;
                 const newHeight = newValue.height as number;
                 if (newWidth > 0 && newHeight > 0) {
                     this.displayWidth = newWidth;
-                    // 优先按宽度缩放；如果按宽度缩放后高度超出容器，则按高度缩放
-                    const scaleByWidth = newWidth / MAP_LOGICAL_WIDTH;
-                    const scaleByHeight = newHeight / MAP_LOGICAL_HEIGHT;
-                    const scale = Math.min(scaleByWidth, scaleByHeight);
-                    this.canvasHeight = Math.round(MAP_LOGICAL_HEIGHT * scale);
+                    this.displayHeight = newHeight;
                     this.drawMap();
                 }
             });
@@ -635,7 +691,7 @@ class Index extends ViewPU {
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Column.create();
-            Column.width('72%');
+            Column.width('55%');
             Column.backgroundColor('#FFFFFF');
             Column.borderRadius(16);
             Column.alignItems(HorizontalAlign.Center);

@@ -82,7 +82,7 @@
       "error": false
     },
     "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\model\\DataModel.ets": {
-      "mtimeMs": 1781598561471.1763,
+      "mtimeMs": 1781712532216.712,
       "children": [
         "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.preferences.d.ts",
         "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts"
@@ -272,7 +272,8 @@
         "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.security.cryptoFramework.d.ts",
         "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.print.d.ts",
         "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\entryability\\EntryAbility.ets",
-        "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.abilityAccessCtrl.d.ts"
+        "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.abilityAccessCtrl.d.ts",
+        "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.display.d.ts"
       ],
       "error": false
     },
@@ -587,7 +588,8 @@
       "children": [],
       "parent": [
         "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimedia.image.d.ts",
-        "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.drawing.d.ts"
+        "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.drawing.d.ts",
+        "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.display.d.ts"
       ],
       "error": false
     },
@@ -1625,7 +1627,7 @@
       "error": false
     },
     "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\common\\PointInPolygon.ets": {
-      "mtimeMs": 1781501693937.191,
+      "mtimeMs": 1781619085581.1794,
       "children": [],
       "parent": [
         "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\pages\\Index.ets"
@@ -1633,7 +1635,7 @@
       "error": false
     },
     "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\pages\\Index.ets": {
-      "mtimeMs": 1781599646042.8237,
+      "mtimeMs": 1781705644377.2024,
       "children": [
         "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts",
         "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.router.d.ts",
@@ -1662,7 +1664,7 @@
       "error": false
     },
     "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\pages\\ProvinceDetail.ets": {
-      "mtimeMs": 1781599701727.1914,
+      "mtimeMs": 1781603788928.174,
       "children": [
         "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.router.d.ts",
         "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts",
@@ -2187,6 +2189,26 @@
       "children": [],
       "parent": [
         "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.abilityAccessCtrl.d.ts"
+      ],
+      "error": false
+    },
+    "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.display.d.ts": {
+      "mtimeMs": 1774582692000,
+      "children": [
+        "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
+        "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.colorSpaceManager.d.ts",
+        "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.hdrCapability.d.ts"
+      ],
+      "parent": [
+        "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\pages\\Index.ets"
+      ],
+      "error": false
+    },
+    "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.hdrCapability.d.ts": {
+      "mtimeMs": 1774582692000,
+      "children": [],
+      "parent": [
+        "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.display.d.ts"
       ],
       "error": false
     }

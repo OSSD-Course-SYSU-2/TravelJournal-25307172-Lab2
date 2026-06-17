@@ -339,7 +339,7 @@ struct ProvinceDetail {
           Row() {
             ForEach(memory.photoUris, (uri: string, index?: number) => {
               Image(this.fileHelper.toImageUri(uri))
-                .width(120)
+                .width('30%')
                 .height(120)
                 .borderRadius(8)
                 .objectFit(ImageFit.Cover)
@@ -535,7 +535,7 @@ struct ProvinceDetail {
         }
         .width('100%')
       }
-      .width('260')
+      .width('72%')
       .padding(24)
       .backgroundColor('#FFFFFF')
       .borderRadius(16)
