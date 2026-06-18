@@ -11507,3 +11507,720 @@ Require stack:
   hotReloadBuild: undefined,
   customizedParam: undefined
 }
+[2026-06-18T17:29:33.019] [DEBUG] debug-file - Cache service initialization finished in 4 ms 
+[2026-06-18T17:29:33.020] [DEBUG] debug-file - hvigorfile, resolving E:\wwwmm\Documents\OSS\practice\TravelJournal\hvigorfile.ts
+[2026-06-18T17:29:33.024] [DEBUG] debug-file - hvigorfile, require result:  { default: { plugins: [] } }
+[2026-06-18T17:29:33.024] [DEBUG] debug-file - hvigorfile, binding system plugins null
+[2026-06-18T17:29:33.024] [DEBUG] debug-file - Starting plugin build process
+[2026-06-18T17:29:33.024] [DEBUG] debug-file - App plugin prepare start...
+[2026-06-18T17:29:33.024] [DEBUG] debug-file - App plugin prepare end...
+[2026-06-18T17:29:33.024] [DEBUG] debug-file - App plugin creating...
+[2026-06-18T17:29:33.030] [DEBUG] debug-file - App plugin register hook start...
+[2026-06-18T17:29:33.030] [DEBUG] debug-file - App plugin register hook end...
+[2026-06-18T17:29:33.030] [DEBUG] debug-file - Plugin build process completed
+[2026-06-18T17:29:33.031] [DEBUG] debug-file - Start initialize project's product build option map with build mode debug.
+[2026-06-18T17:29:33.031] [DEBUG] debug-file - Picking option from product 'default' with build mode 'debug'.
+[2026-06-18T17:29:33.031] [DEBUG] debug-file - Product 'default' build option initialized
+[2026-06-18T17:29:33.031] [DEBUG] debug-file - End initialize project's product build option map with build mode 'debug'.
+[2026-06-18T17:29:33.031] [DEBUG] debug-file - Obtain build option for product 'default'in this build.
+[2026-06-18T17:29:33.032] [DEBUG] debug-file - not found resModel json file in : E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\src\ohosTest\module.json5
+[2026-06-18T17:29:33.034] [DEBUG] debug-file - E:\wwwmm\Documents\OSS\practice\TravelJournal\build\cache\default\remote_hsp\remoteHspCache.json not exists.
+[2026-06-18T17:29:33.039] [DEBUG] debug-file - Start recording SDK configuration permission data.
+[2026-06-18T17:29:33.065] [DEBUG] debug-file - Sdk init in 30 ms 
+[2026-06-18T17:29:33.069] [DEBUG] debug-file - Project task initialization takes 4 ms 
+[2026-06-18T17:29:33.069] [DEBUG] debug-file - hvigorfile, binding custom plugins []
+[2026-06-18T17:29:33.069] [DEBUG] debug-file - hvigorfile, no custom plugins were found in E:\wwwmm\Documents\OSS\practice\TravelJournal\hvigorfile.ts
+[2026-06-18T17:29:33.069] [DEBUG] debug-file - hvigorfile, resolve finished E:\wwwmm\Documents\OSS\practice\TravelJournal\hvigorfile.ts
+[2026-06-18T17:29:33.069] [DEBUG] debug-file - hvigorfile, resolving E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\hvigorfile.ts
+[2026-06-18T17:29:33.072] [DEBUG] debug-file - hvigorfile, require result:  { default: { plugins: [] } }
+[2026-06-18T17:29:33.072] [DEBUG] debug-file - hvigorfile, binding system plugins null
+[2026-06-18T17:29:33.072] [DEBUG] debug-file - Starting plugin build process
+[2026-06-18T17:29:33.072] [DEBUG] debug-file - Hap plugin creating...
+[2026-06-18T17:29:33.074] [DEBUG] debug-file - failed to load cangjie to dynamically generate schemas: Error: Cannot find module '@ohos/cangjie-build-support/index'
+Require stack:
+- E:\Program Files\Huawei\DevEco Studio\tools\hvigor\hvigor-ohos-plugin\src\plugin\hooks\cangjie-register.js
+- E:\Program Files\Huawei\DevEco Studio\tools\hvigor\hvigor-ohos-plugin\src\plugin\strategy\stage-init-strategy.js
+- E:\Program Files\Huawei\DevEco Studio\tools\hvigor\hvigor-ohos-plugin\src\plugin\builder\abstract-plugin-builder.js
+- E:\Program Files\Huawei\DevEco Studio\tools\hvigor\hvigor-ohos-plugin\src\plugin\builder\app-plugin-builder.js
+- E:\Program Files\Huawei\DevEco Studio\tools\hvigor\hvigor-ohos-plugin\src\plugin\factory\plugin-factory.js
+- E:\Program Files\Huawei\DevEco Studio\tools\hvigor\hvigor-ohos-plugin\index.js
+- E:\wwwmm\Documents\OSS\practice\TravelJournal\hvigorfile.ts
+- E:\Program Files\Huawei\DevEco Studio\tools\hvigor\hvigor\src\base\internal\lifecycle\configuration.js
+- E:\Program Files\Huawei\DevEco Studio\tools\hvigor\hvigor\src\base\boot\index.js
+- E:\Program Files\Huawei\DevEco Studio\tools\hvigor\hvigor\src\base\daemon\cluster\worker-process-lifecycle.js
+- E:\Program Files\Huawei\DevEco Studio\tools\hvigor\hvigor\src\base\daemon\process\daemon-process-boot-script.js
+[2026-06-18T17:29:33.077] [DEBUG] debug-file - Start initialize module-target build option map, moduleName=entry, buildMode=debug
+[2026-06-18T17:29:33.077] [DEBUG] debug-file - Target 'default' config initialized
+[2026-06-18T17:29:33.077] [DEBUG] debug-file - Target 'ohosTest' config initialized
+[2026-06-18T17:29:33.077] [DEBUG] debug-file - Module 'entry' target 'default' build option initialized
+[2026-06-18T17:29:33.077] [DEBUG] debug-file - Module 'entry' target 'ohosTest' build option initialized
+[2026-06-18T17:29:33.077] [DEBUG] debug-file - End initialize module-target build option map, moduleName=entry
+[2026-06-18T17:29:33.077] [DEBUG] debug-file - Start initialize module-target build option map, moduleName=entry, buildMode=release
+[2026-06-18T17:29:33.077] [DEBUG] debug-file - Target 'default' config initialized
+[2026-06-18T17:29:33.078] [DEBUG] debug-file - Target 'ohosTest' config initialized
+[2026-06-18T17:29:33.078] [DEBUG] debug-file - Module 'entry' target 'default' build option initialized
+[2026-06-18T17:29:33.078] [DEBUG] debug-file - Module 'entry' target 'ohosTest' build option initialized
+[2026-06-18T17:29:33.078] [DEBUG] debug-file - End initialize module-target build option map, moduleName=entry
+[2026-06-18T17:29:33.078] [DEBUG] debug-file - Start initialize module-target build option map, moduleName=entry, buildMode=debug
+[2026-06-18T17:29:33.078] [DEBUG] debug-file - Target 'default' config initialized
+[2026-06-18T17:29:33.078] [DEBUG] debug-file - Target 'ohosTest' config initialized
+[2026-06-18T17:29:33.078] [DEBUG] debug-file - Module 'entry' target 'default' build option initialized
+[2026-06-18T17:29:33.079] [DEBUG] debug-file - Module 'entry' target 'ohosTest' build option initialized
+[2026-06-18T17:29:33.079] [DEBUG] debug-file - End initialize module-target build option map, moduleName=entry
+[2026-06-18T17:29:33.079] [DEBUG] debug-file - Obtain build option for module 'entry' target 'default'in this build.
+[2026-06-18T17:29:33.080] [DEBUG] debug-file - Module entry task initialization takes 1 ms 
+[2026-06-18T17:29:33.080] [DEBUG] debug-file - Hap plugin register hook start...
+[2026-06-18T17:29:33.080] [DEBUG] debug-file - Hap plugin register hook end...
+[2026-06-18T17:29:33.080] [DEBUG] debug-file - Plugin build process completed
+[2026-06-18T17:29:33.080] [DEBUG] debug-file - hvigorfile, binding custom plugins []
+[2026-06-18T17:29:33.080] [DEBUG] debug-file - hvigorfile, no custom plugins were found in E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\hvigorfile.ts
+[2026-06-18T17:29:33.080] [DEBUG] debug-file - hvigorfile, resolve finished E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\hvigorfile.ts
+[2026-06-18T17:29:33.100] [DEBUG] debug-file - hvigorfile, resolve hvigorfile dependencies in 20 ms 
+[2026-06-18T17:29:33.100] [DEBUG] debug-file - project has submodules:entry
+[2026-06-18T17:29:33.102] [DEBUG] debug-file - start to load updatedOhPackageInfo to the disk
+[2026-06-18T17:29:33.107] [DEBUG] debug-file - load to the disk finished
+[2026-06-18T17:29:33.108] [DEBUG] debug-file - Start to initialize dependency information.
+[2026-06-18T17:29:33.117] [DEBUG] debug-file - Module TravelJournal Collected Dependency: 
+[2026-06-18T17:29:33.117] [DEBUG] debug-file - Module TravelJournal's total dependency: 0
+[2026-06-18T17:29:33.117] [DEBUG] debug-file - Start to initialize dependency information.
+[2026-06-18T17:29:33.121] [DEBUG] debug-file - Module entry Collected Dependency: 
+[2026-06-18T17:29:33.121] [DEBUG] debug-file - Module entry's total dependency: 0
+[2026-06-18T17:29:33.123] [DEBUG] debug-file - Configuration phase cost:104 ms 
+[2026-06-18T17:29:33.123] [DEBUG] debug-file - Configuration task cost before running: 111 ms 
+[2026-06-18T17:29:33.128] [DEBUG] debug-file - Executing task :entry:default@PreBuild
+[2026-06-18T17:29:33.128] [DEBUG] debug-file - Task 'entry:default@PreBuild' cost while wrapping incremental declarations: 1 ms 
+[2026-06-18T17:29:33.139] [DEBUG] debug-file - Incremental task entry:default@PreBuild pre-execution cost: 8 ms .
+[2026-06-18T17:29:33.139] [DEBUG] debug-file - entry : default@PreBuild cost memory 0.31716156005859375
+[2026-06-18T17:29:33.143] [INFO] debug-file - UP-TO-DATE :entry:default@PreBuild...  
+[2026-06-18T17:29:33.143] [DEBUG] debug-file - Executing task :entry:default@CreateModuleInfo
+[2026-06-18T17:29:33.144] [DEBUG] debug-file - Task 'entry:default@CreateModuleInfo' cost while wrapping incremental declarations: 1 ms 
+[2026-06-18T17:29:33.144] [DEBUG] debug-file - entry : default@CreateModuleInfo cost memory 0.0413665771484375
+[2026-06-18T17:29:33.144] [DEBUG] debug-file - runTaskFromQueue task cost before running: 132 ms 
+[2026-06-18T17:29:33.144] [INFO] debug-file - Finished :entry:default@CreateModuleInfo... after 1 ms 
+[2026-06-18T17:29:33.150] [DEBUG] debug-file - Executing task :entry:default@GenerateMetadata
+[2026-06-18T17:29:33.150] [DEBUG] debug-file - Task 'entry:default@GenerateMetadata' cost while wrapping incremental declarations: 1 ms 
+[2026-06-18T17:29:33.152] [DEBUG] debug-file - Incremental task entry:default@GenerateMetadata pre-execution cost: 2 ms .
+[2026-06-18T17:29:33.152] [DEBUG] debug-file - entry : default@GenerateMetadata cost memory -1.6631851196289062
+[2026-06-18T17:29:33.152] [INFO] debug-file - UP-TO-DATE :entry:default@GenerateMetadata...  
+[2026-06-18T17:29:33.153] [DEBUG] debug-file - Executing task :entry:default@ConfigureCmake
+[2026-06-18T17:29:33.153] [DEBUG] debug-file - entry : default@ConfigureCmake cost memory 0.01580810546875
+[2026-06-18T17:29:33.153] [DEBUG] debug-file - runTaskFromQueue task cost before running: 141 ms 
+[2026-06-18T17:29:33.153] [INFO] debug-file - Finished :entry:default@ConfigureCmake... after 1 ms 
+[2026-06-18T17:29:33.154] [DEBUG] debug-file - Executing task :entry:default@MergeProfile
+[2026-06-18T17:29:33.154] [DEBUG] debug-file - Task 'entry:default@MergeProfile' cost while wrapping incremental declarations: 1 ms 
+[2026-06-18T17:29:33.156] [DEBUG] debug-file - Incremental task entry:default@MergeProfile pre-execution cost: 2 ms .
+[2026-06-18T17:29:33.156] [DEBUG] debug-file - entry : default@MergeProfile cost memory 0.1293792724609375
+[2026-06-18T17:29:33.156] [INFO] debug-file - UP-TO-DATE :entry:default@MergeProfile...  
+[2026-06-18T17:29:33.158] [DEBUG] debug-file - Executing task :entry:default@CreateBuildProfile
+[2026-06-18T17:29:33.158] [DEBUG] debug-file - Task 'entry:default@CreateBuildProfile' cost while wrapping incremental declarations: 1 ms 
+[2026-06-18T17:29:33.160] [DEBUG] debug-file - Incremental task entry:default@CreateBuildProfile pre-execution cost: 2 ms .
+[2026-06-18T17:29:33.160] [DEBUG] debug-file - entry : default@CreateBuildProfile cost memory 0.0924224853515625
+[2026-06-18T17:29:33.160] [INFO] debug-file - UP-TO-DATE :entry:default@CreateBuildProfile...  
+[2026-06-18T17:29:33.161] [DEBUG] debug-file - Executing task :entry:default@PreCheckSyscap
+[2026-06-18T17:29:33.161] [DEBUG] debug-file - entry : default@PreCheckSyscap cost memory 0.0138092041015625
+[2026-06-18T17:29:33.161] [DEBUG] debug-file - runTaskFromQueue task cost before running: 149 ms 
+[2026-06-18T17:29:33.161] [INFO] debug-file - Finished :entry:default@PreCheckSyscap... after 1 ms 
+[2026-06-18T17:29:33.162] [DEBUG] debug-file - Executing task :entry:default@GeneratePkgContextInfo
+[2026-06-18T17:29:33.167] [DEBUG] debug-file - Task 'entry:default@GeneratePkgContextInfo' cost while wrapping incremental declarations: 1 ms 
+[2026-06-18T17:29:33.168] [DEBUG] debug-file - Incremental task entry:default@GeneratePkgContextInfo pre-execution cost: 1 ms .
+[2026-06-18T17:29:33.168] [DEBUG] debug-file - entry : default@GeneratePkgContextInfo cost memory 0.2182464599609375
+[2026-06-18T17:29:33.168] [INFO] debug-file - UP-TO-DATE :entry:default@GeneratePkgContextInfo...  
+[2026-06-18T17:29:33.172] [DEBUG] debug-file - Executing task :entry:default@ProcessIntegratedHsp
+[2026-06-18T17:29:33.173] [DEBUG] debug-file - entry:default@ProcessIntegratedHsp is not up-to-date, since the output file 'E:\wwwmm\Documents\OSS\practice\TravelJournal\build\cache\default\integrated_hsp\integratedHspCache.json' does not exist.
+[2026-06-18T17:29:33.173] [DEBUG] debug-file - Incremental task entry:default@ProcessIntegratedHsp pre-execution cost: 1 ms .
+[2026-06-18T17:29:33.173] [DEBUG] debug-file - entry : default@ProcessIntegratedHsp cost memory 0.05657958984375
+[2026-06-18T17:29:33.173] [DEBUG] debug-file - runTaskFromQueue task cost before running: 161 ms 
+[2026-06-18T17:29:33.173] [INFO] debug-file - Finished :entry:default@ProcessIntegratedHsp... after 1 ms 
+[2026-06-18T17:29:33.174] [DEBUG] debug-file - Executing task :entry:default@BuildNativeWithCmake
+[2026-06-18T17:29:33.174] [DEBUG] debug-file - entry : default@BuildNativeWithCmake cost memory 0.01358795166015625
+[2026-06-18T17:29:33.174] [DEBUG] debug-file - runTaskFromQueue task cost before running: 162 ms 
+[2026-06-18T17:29:33.174] [INFO] debug-file - Finished :entry:default@BuildNativeWithCmake... after 1 ms 
+[2026-06-18T17:29:33.175] [DEBUG] debug-file - Executing task :entry:default@MakePackInfo
+[2026-06-18T17:29:33.177] [DEBUG] debug-file - Incremental task entry:default@MakePackInfo pre-execution cost: 2 ms .
+[2026-06-18T17:29:33.177] [DEBUG] debug-file - entry : default@MakePackInfo cost memory 0.11244964599609375
+[2026-06-18T17:29:33.177] [INFO] debug-file - UP-TO-DATE :entry:default@MakePackInfo...  
+[2026-06-18T17:29:33.179] [DEBUG] debug-file - Executing task :entry:default@SyscapTransform
+[2026-06-18T17:29:33.179] [DEBUG] debug-file - File: 'E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\src\main\syscap.json' from 'sysCapJsonPath' is not exists, just ignore.
+[2026-06-18T17:29:33.180] [DEBUG] debug-file - Task 'entry:default@SyscapTransform' cost while wrapping incremental declarations: 2 ms 
+[2026-06-18T17:29:33.183] [DEBUG] debug-file - entry:default@SyscapTransform is not up-to-date, since the output file 'E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\syscap\default\rpcid.sc' does not exist.
+[2026-06-18T17:29:33.183] [DEBUG] debug-file - Incremental task entry:default@SyscapTransform pre-execution cost: 3 ms .
+[2026-06-18T17:29:33.183] [DEBUG] debug-file - entry : default@SyscapTransform cost memory -1.3604049682617188
+[2026-06-18T17:29:33.183] [DEBUG] debug-file - runTaskFromQueue task cost before running: 171 ms 
+[2026-06-18T17:29:33.184] [INFO] debug-file - Finished :entry:default@SyscapTransform... after 5 ms 
+[2026-06-18T17:29:33.185] [DEBUG] debug-file - Executing task :entry:default@ProcessProfile
+[2026-06-18T17:29:33.186] [DEBUG] debug-file - Task 'entry:default@ProcessProfile' cost while wrapping incremental declarations: 1 ms 
+[2026-06-18T17:29:33.187] [DEBUG] debug-file - Incremental task entry:default@ProcessProfile pre-execution cost: 2 ms .
+[2026-06-18T17:29:33.187] [DEBUG] debug-file - entry : default@ProcessProfile cost memory 0.12970733642578125
+[2026-06-18T17:29:33.187] [INFO] debug-file - UP-TO-DATE :entry:default@ProcessProfile...  
+[2026-06-18T17:29:33.188] [DEBUG] debug-file - Executing task :entry:default@ProcessRouterMap
+[2026-06-18T17:29:33.192] [DEBUG] debug-file - Incremental task entry:default@ProcessRouterMap pre-execution cost: 3 ms .
+[2026-06-18T17:29:33.192] [DEBUG] debug-file - entry : default@ProcessRouterMap cost memory 0.167510986328125
+[2026-06-18T17:29:33.192] [INFO] debug-file - UP-TO-DATE :entry:default@ProcessRouterMap...  
+[2026-06-18T17:29:33.193] [DEBUG] debug-file - Executing task :entry:default@ProcessShareConfig
+[2026-06-18T17:29:33.196] [DEBUG] debug-file - Incremental task entry:default@ProcessShareConfig pre-execution cost: 3 ms .
+[2026-06-18T17:29:33.197] [DEBUG] debug-file - entry : default@ProcessShareConfig cost memory 0.1438140869140625
+[2026-06-18T17:29:33.197] [INFO] debug-file - UP-TO-DATE :entry:default@ProcessShareConfig...  
+[2026-06-18T17:29:33.198] [DEBUG] debug-file - Executing task :entry:default@ProcessStartupConfig
+[2026-06-18T17:29:33.198] [DEBUG] debug-file - Task 'entry:default@ProcessStartupConfig' cost while wrapping incremental declarations: 1 ms 
+[2026-06-18T17:29:33.199] [DEBUG] debug-file - entry:default@ProcessStartupConfig is not up-to-date, since the output file 'E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\startup\default\startup_config.json' does not exist.
+[2026-06-18T17:29:33.199] [DEBUG] debug-file - Incremental task entry:default@ProcessStartupConfig pre-execution cost: 1 ms .
+[2026-06-18T17:29:33.200] [DEBUG] debug-file - entry : default@ProcessStartupConfig cost memory 0.14501190185546875
+[2026-06-18T17:29:33.200] [DEBUG] debug-file - runTaskFromQueue task cost before running: 188 ms 
+[2026-06-18T17:29:33.201] [INFO] debug-file - Finished :entry:default@ProcessStartupConfig... after 3 ms 
+[2026-06-18T17:29:33.202] [DEBUG] debug-file - Executing task :entry:default@BuildNativeWithNinja
+[2026-06-18T17:29:33.202] [DEBUG] debug-file - entry : default@BuildNativeWithNinja cost memory 0.02101898193359375
+[2026-06-18T17:29:33.202] [DEBUG] debug-file - runTaskFromQueue task cost before running: 190 ms 
+[2026-06-18T17:29:33.202] [INFO] debug-file - Finished :entry:default@BuildNativeWithNinja... after 1 ms 
+[2026-06-18T17:29:33.204] [DEBUG] debug-file - restool module names: entry; moduleName=entry, taskName=default@ProcessResource
+[2026-06-18T17:29:33.206] [DEBUG] debug-file - Executing task :entry:default@ProcessResource
+[2026-06-18T17:29:33.206] [DEBUG] debug-file - Task 'entry:default@ProcessResource' cost while wrapping incremental declarations: 1 ms 
+[2026-06-18T17:29:33.207] [DEBUG] debug-file - Incremental task entry:default@ProcessResource pre-execution cost: 2 ms .
+[2026-06-18T17:29:33.207] [DEBUG] debug-file - entry : default@ProcessResource cost memory 0.1378326416015625
+[2026-06-18T17:29:33.211] [INFO] debug-file - UP-TO-DATE :entry:default@ProcessResource...  
+[2026-06-18T17:29:33.213] [DEBUG] debug-file - Executing task :entry:default@GenerateLoaderJson
+[2026-06-18T17:29:33.214] [DEBUG] debug-file - Task 'entry:default@GenerateLoaderJson' cost while wrapping incremental declarations: 1 ms 
+[2026-06-18T17:29:33.225] [DEBUG] debug-file - Incremental task entry:default@GenerateLoaderJson pre-execution cost: 7 ms .
+[2026-06-18T17:29:33.225] [DEBUG] debug-file - entry : default@GenerateLoaderJson cost memory 0.5516433715820312
+[2026-06-18T17:29:33.230] [INFO] debug-file - UP-TO-DATE :entry:default@GenerateLoaderJson...  
+[2026-06-18T17:29:33.231] [DEBUG] debug-file - Executing task :entry:default@ProcessLibs
+[2026-06-18T17:29:33.234] [DEBUG] debug-file - Incremental task entry:default@ProcessLibs pre-execution cost: 3 ms .
+[2026-06-18T17:29:33.234] [DEBUG] debug-file - entry : default@ProcessLibs cost memory 0.10906982421875
+[2026-06-18T17:29:33.235] [INFO] debug-file - UP-TO-DATE :entry:default@ProcessLibs...  
+[2026-06-18T17:29:33.236] [DEBUG] debug-file - restool module names: entry; moduleName=entry, taskName=default@CompileResource
+[2026-06-18T17:29:33.237] [DEBUG] debug-file - Executing task :entry:default@CompileResource
+[2026-06-18T17:29:33.253] [DEBUG] debug-file - Incremental task entry:default@CompileResource pre-execution cost: 15 ms .
+[2026-06-18T17:29:33.253] [DEBUG] debug-file - entry : default@CompileResource cost memory 0.5211715698242188
+[2026-06-18T17:29:33.255] [INFO] debug-file - UP-TO-DATE :entry:default@CompileResource...  
+[2026-06-18T17:29:33.256] [DEBUG] debug-file - Executing task :entry:default@DoNativeStrip
+[2026-06-18T17:29:33.257] [DEBUG] debug-file - Task 'entry:default@DoNativeStrip' cost while wrapping incremental declarations: 1 ms 
+[2026-06-18T17:29:33.258] [DEBUG] debug-file - Incremental task entry:default@DoNativeStrip pre-execution cost: 2 ms .
+[2026-06-18T17:29:33.258] [DEBUG] debug-file - entry : default@DoNativeStrip cost memory 0.07703399658203125
+[2026-06-18T17:29:33.258] [INFO] debug-file - UP-TO-DATE :entry:default@DoNativeStrip...  
+[2026-06-18T17:29:33.260] [DEBUG] debug-file - Executing task :entry:default@CompileArkTS
+[2026-06-18T17:29:33.260] [DEBUG] debug-file - obfuscationOptions: undefined
+[2026-06-18T17:29:33.261] [DEBUG] debug-file - Task 'entry:default@CompileArkTS' cost while wrapping incremental declarations: 1 ms 
+[2026-06-18T17:29:33.275] [DEBUG] debug-file - entry:default@CompileArkTS is not up-to-date, since the input file 'E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\src\main\ets' has been changed.
+[2026-06-18T17:29:33.275] [DEBUG] debug-file - Incremental task entry:default@CompileArkTS pre-execution cost: 12 ms .
+[2026-06-18T17:29:33.291] [DEBUG] debug-file - build config:
+[2026-06-18T17:29:33.291] [DEBUG] debug-file - {
+  moduleType: 'entry',
+  perf: 0,
+  targetName: '.default',
+  packageManagerType: 'ohpm',
+  localPropertiesPath: 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\local.properties',
+  isPreview: false,
+  isOhosTest: false,
+  isLocalTest: false,
+  buildMode: 'Debug',
+  hotReloadBuild: undefined,
+  watchMode: 'false',
+  aceProfilePath: 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\build\\default\\intermediates\\res\\default\\resources\\base\\profile',
+  etsLoaderPath: 'E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader',
+  modulePath: 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry',
+  testFrameworkPar: {
+    testMode: undefined,
+    coveragePathFilter: undefined,
+    coverageMode: undefined
+  },
+  needCoverageInsert: false,
+  debugLine: false,
+  projectTopDir: 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal',
+  compileSdkVersion: 22,
+  compatibleSdkVersion: 22,
+  originCompatibleSdkVersion: '6.0.2(22)',
+  compatibleSdkVersionStage: undefined,
+  bundleName: 'c***l',
+  etsLoaderVersion: '6.0.2.130',
+  etsLoaderReleaseType: 'Release',
+  aotCompileMode: 'type',
+  apPath: 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\modules.ap',
+  entryModuleName: 'entry',
+  entryModuleVersion: '1.0.0',
+  entryPackageName: 'entry',
+  allModuleNameHash: 'b5548bf03cc6355e89272ad80305f8fb4fc21265d8735d8e5f64ec431db1c821',
+  externalApiPaths: [
+    'E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\hms\\ets'
+  ],
+  compilerTypes: [],
+  isCrossplatform: false,
+  hvigorPluginFile: undefined,
+  compilePluginPath: undefined,
+  buildGeneratedProfilePath: 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\build\\default\\generated\\profile\\default',
+  bundleType: 'app',
+  arkTSVersion: undefined,
+  apiVersion: 22,
+  needCompleteSourcesMap: false,
+  isFaMode: false,
+  buildDir: 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\build',
+  deviceTypes: [ 'phone', 'tablet', '2in1' ],
+  pkgContextInfo: {
+    '@ohos/hypium': {
+      packageName: '@ohos/hypium',
+      bundleName: '*****',
+      moduleName: '',
+      version: '1.0.25',
+      entryPath: 'index.js',
+      isSO: false,
+      dependencyAlias: ''
+    },
+    '@ohos/hamock': {
+      packageName: '@ohos/hamock',
+      bundleName: '*****',
+      moduleName: '',
+      version: '1.0.0',
+      entryPath: 'index.ets',
+      isSO: false,
+      dependencyAlias: ''
+    },
+    entry: {
+      packageName: 'entry',
+      bundleName: '*****',
+      moduleName: '',
+      version: '',
+      entryPath: 'src/main/',
+      isSO: false,
+      dependencyAlias: ''
+    }
+  },
+  ohPackagePathMap: {},
+  dependencyAliasMap: {},
+  permission: { requestPermissions: [ [Object] ], definePermissions: undefined },
+  useGetCurrentBundleName: false,
+  projectArkOption: undefined,
+  sourceMapDir: undefined,
+  branchElimination: false,
+  transformLib: undefined,
+  tsImportSendable: false,
+  resolveConflictMode: true,
+  depName2RootPath: {},
+  depName2DepInfo: {},
+  rootPathSet: [ 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal' ],
+  useNativeResolver: true,
+  shouldEmitJs: true,
+  useTscResolve: false,
+  singleFileEmit: false,
+  userProjectConfig: {
+    autoLazyImport: false,
+    allowEmptyBundleName: false,
+    reExportCheckMode: 'noCheck',
+    executionMode: 'memory',
+    usePathPlaceholder: false,
+    writeRollupCache: true,
+    isExpandImportEnabled: false,
+    expandImportExclude: '',
+    lazyImportExclude: '',
+    lazyImportInclude: '',
+    ignoreCrossplatformCheck: false,
+    isHarDeduplicateEnabled: false,
+    skipOhModulesLint: false,
+    enableStrictCheckOHModule: false,
+    disableSendableCheckRules: [],
+    useDeclarationFileSignature: false,
+    customizedOptions: undefined,
+    integratedHsp: false,
+    isPreloadSoEnabled: false
+  },
+  executionMode: 'memory',
+  arkCompileCachePath: 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\build\\default\\cache\\default\\default@CompileArkTS\\esmodule',
+  autoLazyFilter: undefined,
+  isHarDeduplicateEnabled: false,
+  intermediateHarDuplicateDirPath: 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\build\\default\\intermediates\\har_duplicate\\default',
+  autoLazyImport: false,
+  allowEmptyBundleName: false,
+  reExportCheckMode: 'noCheck',
+  usePathPlaceholder: false,
+  writeRollupCache: true,
+  isExpandImportEnabled: false,
+  expandImportExclude: '',
+  lazyImportExclude: '',
+  lazyImportInclude: '',
+  ignoreCrossplatformCheck: false,
+  skipOhModulesLint: false,
+  enableStrictCheckOHModule: false,
+  disableSendableCheckRules: [],
+  useDeclarationFileSignature: false,
+  customizedOptions: undefined,
+  integratedHsp: false,
+  isPreloadSoEnabled: false,
+  strictMode: {
+    caseSensitiveCheck: true,
+    useNormalizedOHMUrl: true,
+    noExternalImportByPath: true
+  },
+  useNormalizedOHMUrl: true,
+  caseSensitiveCheck: true,
+  aceModuleJsonPath: 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\build\\default\\intermediates\\res\\default\\ark_module.json',
+  appResource: 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\build\\default\\intermediates\\res\\default\\ResourceTable.txt',
+  rawFileResource: 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\build\\default\\intermediates\\res\\default\\resources\\rawfile',
+  resourceTableHash: 'c5ad23254d9a295ed808d9d3ef811c14efdec65002d780d97cd4b1c4c6b00558',
+  runtimeOS: 'HarmonyOS',
+  sdkInfo: 'false:22:6.0.2.130:Release',
+  aceModuleRoot: 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets',
+  compileMode: 'esmodule',
+  aceSuperVisualPath: 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\supervisual',
+  aceBuildJson: 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\build\\default\\intermediates\\loader\\default\\loader.json',
+  cachePath: 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\build\\default\\cache\\default\\default@CompileArkTS\\esmodule\\debug',
+  aceModuleBuild: 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\build\\default\\intermediates\\loader_out\\default\\ets',
+  supportChunks: true,
+  declaredFilesPath: undefined,
+  shouldCollectDirectImportees: false,
+  isByteCodeHarOptimize: false,
+  expandImportPath: undefined,
+  pkgNameToPkgBriefInfo: {
+    entry: {
+      pkgRoot: 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry',
+      originalSourceRoots: undefined,
+      sourceRoots: [Array],
+      pkgName: 'entry'
+    }
+  },
+  projectModel: {
+    'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main': {
+      moduleName: 'entry',
+      modulePkgPath: 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry',
+      belongProjectPath: 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal'
+    },
+    'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\.test\\default\\intermediates\\src\\ohosTest\\ets': {
+      moduleName: 'entry',
+      modulePkgPath: 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry',
+      belongProjectPath: 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal'
+    },
+    'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\ohosTest': {
+      moduleName: 'entry',
+      modulePkgPath: 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry',
+      belongProjectPath: 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal'
+    },
+    'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry': {
+      moduleName: 'entry',
+      modulePkgPath: 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry',
+      belongProjectPath: 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal'
+    },
+    'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal': {
+      moduleName: 'TravelJournal',
+      modulePkgPath: 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal',
+      belongProjectPath: 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal'
+    }
+  },
+  pkgJsonFileHash: 'd849b478c9bec41644203843626de2faf66806a2d39256fd57244ed6159ae590',
+  allModulePaths: [ 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry' ],
+  routerMap: {},
+  obfuscationOptions: undefined,
+  byteCodeHarToDependencyKeys: undefined,
+  compileBlockPkg: [],
+  mockParams: {
+    decorator: '@MockSetup',
+    packageName: '@ohos/hamock',
+    etsSourceRootPath: 'src/main/ets',
+    mockConfigPath: undefined,
+    mockConfigKey2ModuleInfo: {},
+    source2ModuleIdMap: {}
+  },
+  copyCodeResourceEnable: false,
+  copyCodeResourceExcludes: [],
+  copyCodeResourceIncludes: undefined,
+  uiTransformOptimization: false,
+  sdkPath: 'E:/Program Files/Huawei/DevEco Studio/sdk',
+  needPreloadSoFileSet: {},
+  preloadSoFilePath: 'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\build\\default\\intermediates\\preload\\default\\preload.json',
+  useSourceHash: false,
+  localModuleParamMap: {},
+  otherPaths: {
+    'entry/*': [
+      '..\\*',
+      '..\\..\\..\\build\\default\\generated\\profile\\default\\*'
+    ]
+  },
+  collectImportersConfig: undefined
+}
+[2026-06-18T17:29:33.291] [DEBUG] debug-file - Compile arkts with external api path: E:\Program Files\Huawei\DevEco Studio\sdk\default\hms\ets
+[2026-06-18T17:29:33.292] [DEBUG] debug-file - default@CompileArkTS work[11] is submitted.
+[2026-06-18T17:29:33.293] [DEBUG] debug-file - default@CompileArkTS work[11] is pushed to ready queue.
+[2026-06-18T17:29:33.293] [DEBUG] debug-file - A work dispatched to worker[31] failed because unable to get work from ready queue.
+[2026-06-18T17:29:33.293] [DEBUG] debug-file - A work dispatched to worker[30] failed because unable to get work from ready queue.
+[2026-06-18T17:29:33.293] [DEBUG] debug-file - A work dispatched to worker[29] failed because unable to get work from ready queue.
+[2026-06-18T17:29:33.293] [DEBUG] debug-file - A work dispatched to worker[28] failed because unable to get work from ready queue.
+[2026-06-18T17:29:33.293] [DEBUG] debug-file - A work dispatched to worker[27] failed because unable to get work from ready queue.
+[2026-06-18T17:29:33.293] [DEBUG] debug-file - A work dispatched to worker[26] failed because unable to get work from ready queue.
+[2026-06-18T17:29:33.293] [DEBUG] debug-file - A work dispatched to worker[25] failed because unable to get work from ready queue.
+[2026-06-18T17:29:33.293] [DEBUG] debug-file - A work dispatched to worker[24] failed because unable to get work from ready queue.
+[2026-06-18T17:29:33.293] [DEBUG] debug-file - A work dispatched to worker[23] failed because unable to get work from ready queue.
+[2026-06-18T17:29:33.293] [DEBUG] debug-file - A work dispatched to worker[22] failed because unable to get work from ready queue.
+[2026-06-18T17:29:33.293] [DEBUG] debug-file - A work dispatched to worker[21] failed because unable to get work from ready queue.
+[2026-06-18T17:29:33.293] [DEBUG] debug-file - A work dispatched to worker[20] failed because unable to get work from ready queue.
+[2026-06-18T17:29:33.293] [DEBUG] debug-file - A work dispatched to worker[19] failed because unable to get work from ready queue.
+[2026-06-18T17:29:33.293] [DEBUG] debug-file - A work dispatched to worker[18] failed because unable to get work from ready queue.
+[2026-06-18T17:29:33.294] [DEBUG] debug-file - A work dispatched to worker[17] failed because unable to get work from ready queue.
+[2026-06-18T17:29:33.294] [DEBUG] debug-file - A work dispatched to worker[16] failed because unable to get work from ready queue.
+[2026-06-18T17:29:33.294] [DEBUG] debug-file - A work dispatched to worker[15] failed because unable to get work from ready queue.
+[2026-06-18T17:29:33.294] [DEBUG] debug-file - A work dispatched to worker[14] failed because unable to get work from ready queue.
+[2026-06-18T17:29:33.294] [DEBUG] debug-file - A work dispatched to worker[13] failed because unable to get work from ready queue.
+[2026-06-18T17:29:33.294] [DEBUG] debug-file - A work dispatched to worker[12] failed because unable to get work from ready queue.
+[2026-06-18T17:29:33.294] [DEBUG] debug-file - A work dispatched to worker[11] failed because unable to get work from ready queue.
+[2026-06-18T17:29:33.294] [DEBUG] debug-file - A work dispatched to worker[10] failed because unable to get work from ready queue.
+[2026-06-18T17:29:33.294] [DEBUG] debug-file - A work dispatched to worker[9] failed because unable to get work from ready queue.
+[2026-06-18T17:29:33.294] [DEBUG] debug-file - A work dispatched to worker[8] failed because unable to get work from ready queue.
+[2026-06-18T17:29:33.294] [DEBUG] debug-file - A work dispatched to worker[7] failed because unable to get work from ready queue.
+[2026-06-18T17:29:33.294] [DEBUG] debug-file - A work dispatched to worker[6] failed because unable to get work from ready queue.
+[2026-06-18T17:29:33.294] [DEBUG] debug-file - A work dispatched to worker[5] failed because unable to get work from ready queue.
+[2026-06-18T17:29:33.294] [DEBUG] debug-file - default@CompileArkTS work[11] has been dispatched to worker[4].
+[2026-06-18T17:29:33.294] [DEBUG] debug-file - default@CompileArkTS work[11] is dispatched.
+[2026-06-18T17:29:33.294] [DEBUG] debug-file - entry : default@CompileArkTS cost memory 0.06815338134765625
+[2026-06-18T17:29:33.296] [DEBUG] debug-file - Executing task :entry:default@BuildJS
+[2026-06-18T17:29:33.296] [DEBUG] debug-file - Task 'entry:default@BuildJS' cost while wrapping incremental declarations: 1 ms 
+[2026-06-18T17:29:33.301] [DEBUG] debug-file - entry : default@BuildJS cost memory 0.16344451904296875
+[2026-06-18T17:29:33.301] [DEBUG] debug-file - runTaskFromQueue task cost before running: 289 ms 
+[2026-06-18T17:29:33.301] [INFO] debug-file - Finished :entry:default@BuildJS... after 6 ms 
+[2026-06-18T17:29:33.302] [DEBUG] debug-file - Executing task :entry:default@CacheNativeLibs
+[2026-06-18T17:29:33.303] [DEBUG] debug-file - Task 'entry:default@CacheNativeLibs' cost while wrapping incremental declarations: 1 ms 
+[2026-06-18T17:29:33.305] [DEBUG] debug-file - Incremental task entry:default@CacheNativeLibs pre-execution cost: 2 ms .
+[2026-06-18T17:29:33.305] [DEBUG] debug-file - entry : default@CacheNativeLibs cost memory 0.0936737060546875
+[2026-06-18T17:29:33.305] [INFO] debug-file - UP-TO-DATE :entry:default@CacheNativeLibs...  
+[2026-06-18T17:29:34.372] [WARN] debug-file - [33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/common/ContinuationHelper.ets:61:27
+ 'continuationManager' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/common/ContinuationHelper.ets:61:47
+ 'ContinuationMode' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/common/ContinuationHelper.ets:61:64
+ 'COLLABORATION_SINGLE' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/common/ContinuationHelper.ets:63:26
+ 'continuationManager' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/common/ContinuationHelper.ets:63:46
+ 'register' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/common/ContinuationHelper.ets:65:7
+ 'continuationManager' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/common/ContinuationHelper.ets:65:27
+ 'on' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/common/ContinuationHelper.ets:69:66
+ 'id' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/common/ContinuationHelper.ets:69:83
+ 'type' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/common/ContinuationHelper.ets:72:13
+ 'continuationManager' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/common/ContinuationHelper.ets:72:33
+ 'updateConnectStatus' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/common/ContinuationHelper.ets:72:73
+ 'id' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/common/ContinuationHelper.ets:73:15
+ 'continuationManager' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/common/ContinuationHelper.ets:73:35
+ 'DeviceConnectState' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/common/ContinuationHelper.ets:73:54
+ 'CONNECTED' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/common/ContinuationHelper.ets:79:7
+ 'continuationManager' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/common/ContinuationHelper.ets:79:27
+ 'on' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/common/ContinuationHelper.ets:114:7
+ 'continuationManager' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/common/ContinuationHelper.ets:114:27
+ 'off' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/common/ContinuationHelper.ets:115:7
+ 'continuationManager' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/common/ContinuationHelper.ets:115:27
+ 'off' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/common/ContinuationHelper.ets:116:13
+ 'continuationManager' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/common/ContinuationHelper.ets:116:33
+ 'unregister' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/common/ContinuationHelper.ets:172:13
+ 'continuationManager' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/common/ContinuationHelper.ets:172:33
+ 'startContinuationDeviceManager' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/pages/Index.ets:83:21
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/pages/Index.ets:97:18
+ 'pushUrl' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/pages/Index.ets:109:7
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/pages/Index.ets:109:14
+ 'pushUrl' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/pages/Index.ets:479:10
+ 'indicatorStyle' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/pages/Index.ets:637:20
+ 'pushUrl' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/pages/ProvinceDetail.ets:47:27
+ 'getParams' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: E:/wwwmm/Documents/OSS/practice/TravelJournal/entry/src/main/ets/pages/ProvinceDetail.ets:236:31
+ 'back' has been deprecated.
+[39m[39m
+
+[2026-06-18T17:29:34.372] [DEBUG] debug-file - Ark compile task finished.finished time is 29039307351500
+[2026-06-18T17:29:34.373] [DEBUG] debug-file - worker[4] has one work done.
+[2026-06-18T17:29:34.374] [DEBUG] debug-file - default@CompileArkTS work[11] done.
+[2026-06-18T17:29:34.377] [INFO] debug-file - Finished :entry:default@CompileArkTS... after 1 s 113 ms 
+[2026-06-18T17:29:34.378] [DEBUG] debug-file - Executing task :entry:default@GeneratePkgModuleJson
+[2026-06-18T17:29:34.378] [DEBUG] debug-file - File: 'E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\preload\default\preload.json' from 'preloadSoJsonPath' is not exists, just ignore.
+[2026-06-18T17:29:34.379] [DEBUG] debug-file - Error occurs while handling @Input 'shouldDeduplicateHar': The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received undefined
+[2026-06-18T17:29:34.379] [DEBUG] debug-file - Task 'entry:default@GeneratePkgModuleJson' cost while wrapping incremental declarations: 1 ms 
+[2026-06-18T17:29:34.380] [DEBUG] debug-file - Incremental task entry:default@GeneratePkgModuleJson pre-execution cost: 1 ms .
+[2026-06-18T17:29:34.380] [DEBUG] debug-file - entry : default@GeneratePkgModuleJson cost memory 0.09737396240234375
+[2026-06-18T17:29:34.380] [INFO] debug-file - UP-TO-DATE :entry:default@GeneratePkgModuleJson...  
+[2026-06-18T17:29:34.381] [DEBUG] debug-file - Executing task :entry:default@ProcessCompiledResources
+[2026-06-18T17:29:34.381] [DEBUG] debug-file - File: 'E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\preload\default\preload.json' from 'preloadSoJsonPath' is not exists, just ignore.
+[2026-06-18T17:29:34.381] [DEBUG] debug-file - Task 'entry:default@ProcessCompiledResources' cost while wrapping incremental declarations: 1 ms 
+[2026-06-18T17:29:34.381] [DEBUG] debug-file - entry : default@ProcessCompiledResources cost memory 0.05820465087890625
+[2026-06-18T17:29:34.382] [DEBUG] debug-file - runTaskFromQueue task cost before running: 1 s 369 ms 
+[2026-06-18T17:29:34.382] [INFO] debug-file - Finished :entry:default@ProcessCompiledResources... after 1 ms 
+[2026-06-18T17:29:34.384] [DEBUG] debug-file - Executing task :entry:default@PackageHap
+[2026-06-18T17:29:34.394] [DEBUG] debug-file - entry:default@PackageHap is not up-to-date, since the input file 'E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\loader_out\default\ets' has been changed.
+[2026-06-18T17:29:34.394] [DEBUG] debug-file - Incremental task entry:default@PackageHap pre-execution cost: 9 ms .
+[2026-06-18T17:29:34.395] [DEBUG] debug-file - Use tool [E:\Program Files\Huawei\DevEco Studio\sdk\default\openharmony\toolchains\lib\app_packing_tool.jar]
+ [
+  'java',
+  '-Dfile.encoding=GBK',
+  '-jar',
+  'E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\toolchains\\lib\\app_packing_tool.jar',
+  '--mode',
+  'hap',
+  '--force',
+  'true',
+  '--lib-path',
+  'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\build\\default\\intermediates\\stripped_native_libs\\default',
+  '--json-path',
+  'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\build\\default\\intermediates\\package\\default\\module.json',
+  '--resources-path',
+  'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\build\\default\\intermediates\\res\\default\\resources',
+  '--index-path',
+  'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\build\\default\\intermediates\\res\\default\\resources.index',
+  '--pack-info-path',
+  'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\build\\default\\outputs\\default\\pack.info',
+  '--out-path',
+  'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\build\\default\\outputs\\default\\entry-default-unsigned.hap',
+  '--ets-path',
+  'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\build\\default\\intermediates\\loader_out\\default\\ets',
+  '--pkg-context-path',
+  'E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\build\\default\\intermediates\\loader\\default\\pkgContextInfo.json'
+]
+[2026-06-18T17:29:34.433] [DEBUG] debug-file - java daemon socket received message:{"code":0,"message":"pack success"}
+[2026-06-18T17:29:34.438] [DEBUG] debug-file - entry : default@PackageHap cost memory -1.0405197143554688
+[2026-06-18T17:29:34.438] [DEBUG] debug-file - runTaskFromQueue task cost before running: 1 s 425 ms 
+[2026-06-18T17:29:34.439] [INFO] debug-file - Finished :entry:default@PackageHap... after 54 ms 
+[2026-06-18T17:29:34.441] [DEBUG] debug-file - Executing task :entry:default@PackingCheck
+[2026-06-18T17:29:34.445] [DEBUG] debug-file - entry : default@PackingCheck cost memory 0.28491973876953125
+[2026-06-18T17:29:34.445] [DEBUG] debug-file - runTaskFromQueue task cost before running: 1 s 433 ms 
+[2026-06-18T17:29:34.445] [INFO] debug-file - Finished :entry:default@PackingCheck... after 5 ms 
+[2026-06-18T17:29:34.446] [DEBUG] debug-file - Executing task :entry:default@SignHap
+[2026-06-18T17:29:34.450] [DEBUG] debug-file - entry:default@SignHap is not up-to-date, since the input file 'E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\outputs\default\entry-default-unsigned.hap' has been changed.
+[2026-06-18T17:29:34.450] [DEBUG] debug-file - Incremental task entry:default@SignHap pre-execution cost: 4 ms .
+[2026-06-18T17:29:34.470] [DEBUG] debug-file - java daemon socket close code:1000 reason:close by user
+[2026-06-18T17:29:34.509] [DEBUG] debug-file - java daemon socket received message:{"code":0,"message":"verify profile success"}
+[2026-06-18T17:29:34.513] [DEBUG] debug-file - java daemon socket close code:1000 reason:close by user
+[2026-06-18T17:29:34.589] [DEBUG] debug-file - java daemon socket received message:{"code":0,"message":"sign app success"}
+[2026-06-18T17:29:34.590] [DEBUG] debug-file - entry : default@SignHap cost memory 0.5541458129882812
+[2026-06-18T17:29:34.590] [DEBUG] debug-file - runTaskFromQueue task cost before running: 1 s 578 ms 
+[2026-06-18T17:29:34.591] [INFO] debug-file - Finished :entry:default@SignHap... after 144 ms 
+[2026-06-18T17:29:34.592] [DEBUG] debug-file - Executing task :entry:default@CollectDebugSymbol
+[2026-06-18T17:29:34.594] [DEBUG] debug-file - entry : default@CollectDebugSymbol cost memory 0.09929656982421875
+[2026-06-18T17:29:34.594] [DEBUG] debug-file - runTaskFromQueue task cost before running: 1 s 582 ms 
+[2026-06-18T17:29:34.594] [INFO] debug-file - Finished :entry:default@CollectDebugSymbol... after 2 ms 
+[2026-06-18T17:29:34.594] [DEBUG] debug-file - Executing task :entry:assembleHap
+[2026-06-18T17:29:34.594] [DEBUG] debug-file - entry : assembleHap cost memory 0.01178741455078125
+[2026-06-18T17:29:34.594] [DEBUG] debug-file - runTaskFromQueue task cost before running: 1 s 582 ms 
+[2026-06-18T17:29:34.594] [INFO] debug-file - Finished :entry:assembleHap... after 1 ms 
+[2026-06-18T17:29:34.602] [INFO] debug-file - BUILD SUCCESSFUL in 1 s 589 ms 
+[2026-06-18T17:29:34.602] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@PreBuild is up-to-date.
+[2026-06-18T17:29:34.603] [DEBUG] debug-file - Update task entry:default@CreateModuleInfo output file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\generated\profile\default\ModuleInfo.ts cache.
+[2026-06-18T17:29:34.603] [DEBUG] debug-file - Incremental task entry:default@CreateModuleInfo post-execution cost:1 ms .
+[2026-06-18T17:29:34.603] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@GenerateMetadata is up-to-date.
+[2026-06-18T17:29:34.603] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@MergeProfile is up-to-date.
+[2026-06-18T17:29:34.603] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@CreateBuildProfile is up-to-date.
+[2026-06-18T17:29:34.603] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@GeneratePkgContextInfo is up-to-date.
+[2026-06-18T17:29:34.603] [DEBUG] debug-file - Update task entry:default@ProcessIntegratedHsp output file:E:\wwwmm\Documents\OSS\practice\TravelJournal\build\cache\default\integrated_hsp\integratedHspCache.json cache.
+[2026-06-18T17:29:34.603] [DEBUG] debug-file - Incremental task entry:default@ProcessIntegratedHsp post-execution cost:1 ms .
+[2026-06-18T17:29:34.603] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@MakePackInfo is up-to-date.
+[2026-06-18T17:29:34.603] [DEBUG] debug-file - Update task entry:default@SyscapTransform input file:E:\Program Files\Huawei\DevEco Studio\sdk\default\openharmony\toolchains\syscap_tool.exe cache by regenerate.
+[2026-06-18T17:29:34.604] [DEBUG] debug-file - Update task entry:default@SyscapTransform input file:E:\Program Files\Huawei\DevEco Studio\sdk\default\openharmony\ets\api\device-define cache by regenerate.
+[2026-06-18T17:29:34.605] [DEBUG] debug-file - Update task entry:default@SyscapTransform output file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\syscap\default\rpcid.sc cache.
+[2026-06-18T17:29:34.606] [DEBUG] debug-file - Incremental task entry:default@SyscapTransform post-execution cost:3 ms .
+[2026-06-18T17:29:34.606] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@ProcessProfile is up-to-date.
+[2026-06-18T17:29:34.606] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@ProcessRouterMap is up-to-date.
+[2026-06-18T17:29:34.606] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@ProcessShareConfig is up-to-date.
+[2026-06-18T17:29:34.606] [DEBUG] debug-file - Update task entry:default@ProcessStartupConfig input file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\loader\default\pkgContextInfo.json cache by regenerate.
+[2026-06-18T17:29:34.606] [DEBUG] debug-file - Update task entry:default@ProcessStartupConfig output file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\startup\default\startup_config.json cache.
+[2026-06-18T17:29:34.607] [DEBUG] debug-file - Incremental task entry:default@ProcessStartupConfig post-execution cost:1 ms .
+[2026-06-18T17:29:34.607] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@ProcessResource is up-to-date.
+[2026-06-18T17:29:34.607] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@GenerateLoaderJson is up-to-date.
+[2026-06-18T17:29:34.607] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@ProcessLibs is up-to-date.
+[2026-06-18T17:29:34.607] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@CompileResource is up-to-date.
+[2026-06-18T17:29:34.607] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@DoNativeStrip is up-to-date.
+[2026-06-18T17:29:34.609] [DEBUG] debug-file - Update task entry:default@CompileArkTS input file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\loader\default cache by regenerate.
+[2026-06-18T17:29:34.610] [DEBUG] debug-file - Update task entry:default@CompileArkTS input file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\res\default\resources\rawfile cache by regenerate.
+[2026-06-18T17:29:34.611] [DEBUG] debug-file - Update task entry:default@CompileArkTS input file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\res\default\ResourceTable.txt cache by regenerate.
+[2026-06-18T17:29:34.611] [DEBUG] debug-file - Update task entry:default@CompileArkTS input file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\res\default\ark_module.json cache by regenerate.
+[2026-06-18T17:29:34.611] [DEBUG] debug-file - Update task entry:default@CompileArkTS input file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\res\default\resources\base\profile cache by regenerate.
+[2026-06-18T17:29:34.612] [DEBUG] debug-file - Update task entry:default@CompileArkTS input file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\src\main\ets cache from map.
+[2026-06-18T17:29:34.612] [DEBUG] debug-file - Update task entry:default@CompileArkTS input file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\loader\default\pkgContextInfo.json cache by regenerate.
+[2026-06-18T17:29:34.612] [DEBUG] debug-file - Update task entry:default@CompileArkTS input file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\generated\profile\default\BuildProfile.ets cache by regenerate.
+[2026-06-18T17:29:34.612] [DEBUG] debug-file - Update task entry:default@CompileArkTS output file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\loader_out\default\ets cache.
+[2026-06-18T17:29:34.613] [DEBUG] debug-file - Incremental task entry:default@CompileArkTS post-execution cost:7 ms .
+[2026-06-18T17:29:34.615] [DEBUG] debug-file - Update task entry:default@BuildJS input file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\loader\default cache by regenerate.
+[2026-06-18T17:29:34.616] [DEBUG] debug-file - Update task entry:default@BuildJS input file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\res\default\resources\rawfile cache by regenerate.
+[2026-06-18T17:29:34.616] [DEBUG] debug-file - Update task entry:default@BuildJS input file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\res\default\ResourceTable.txt cache by regenerate.
+[2026-06-18T17:29:34.617] [DEBUG] debug-file - Update task entry:default@BuildJS input file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\res\default\ark_module.json cache by regenerate.
+[2026-06-18T17:29:34.617] [DEBUG] debug-file - Update task entry:default@BuildJS input file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\res\default\resources\base\profile cache by regenerate.
+[2026-06-18T17:29:34.618] [DEBUG] debug-file - Update task entry:default@BuildJS input file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\loader\default\pkgContextInfo.json cache by regenerate.
+[2026-06-18T17:29:34.618] [DEBUG] debug-file - Update task entry:default@BuildJS output file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\loader_out\default\js cache.
+[2026-06-18T17:29:34.618] [DEBUG] debug-file - Incremental task entry:default@BuildJS post-execution cost:6 ms .
+[2026-06-18T17:29:34.618] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@CacheNativeLibs is up-to-date.
+[2026-06-18T17:29:34.618] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@GeneratePkgModuleJson is up-to-date.
+[2026-06-18T17:29:34.618] [DEBUG] debug-file - Incremental task entry:default@ProcessCompiledResources post-execution cost:1 ms .
+[2026-06-18T17:29:34.620] [DEBUG] debug-file - Update task entry:default@PackageHap input file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\stripped_native_libs\default cache by regenerate.
+[2026-06-18T17:29:34.620] [DEBUG] debug-file - Update task entry:default@PackageHap input file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\res\default\module.json cache by regenerate.
+[2026-06-18T17:29:34.620] [DEBUG] debug-file - Update task entry:default@PackageHap input file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\res\default\resources cache by regenerate.
+[2026-06-18T17:29:34.622] [DEBUG] debug-file - Update task entry:default@PackageHap input file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\res\default\resources.index cache by regenerate.
+[2026-06-18T17:29:34.623] [DEBUG] debug-file - Update task entry:default@PackageHap input file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\outputs\default\pack.info cache by regenerate.
+[2026-06-18T17:29:34.623] [DEBUG] debug-file - Update task entry:default@PackageHap input file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\loader_out\default\ets cache from map.
+[2026-06-18T17:29:34.623] [DEBUG] debug-file - Update task entry:default@PackageHap input file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\loader\default\pkgContextInfo.json cache by regenerate.
+[2026-06-18T17:29:34.624] [DEBUG] debug-file - Update task entry:default@PackageHap input file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\loader_out\default\ets\sourceMaps.map cache by regenerate.
+[2026-06-18T17:29:34.624] [DEBUG] debug-file - Update task entry:default@PackageHap input file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\generated\profile\default\BuildProfile.ets cache by regenerate.
+[2026-06-18T17:29:34.624] [DEBUG] debug-file - Update task entry:default@PackageHap output file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\outputs\default\entry-default-unsigned.hap cache.
+[2026-06-18T17:29:34.624] [DEBUG] debug-file - Update task entry:default@PackageHap output file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\source_map\default\sourceMaps.map cache.
+[2026-06-18T17:29:34.625] [DEBUG] debug-file - Update task entry:default@PackageHap output file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\outputs\default\mapping\sourceMaps.map cache.
+[2026-06-18T17:29:34.625] [DEBUG] debug-file - Incremental task entry:default@PackageHap post-execution cost:7 ms .
+[2026-06-18T17:29:34.626] [DEBUG] debug-file - Update task entry:default@SignHap input file:C:\Users\wwwmm\.ohos\config\default_TravelJournal_OAQfuWdk35Rb1QA4SLju8yqm-g6XR5r8fdOJpieBQnY=.cer cache by regenerate.
+[2026-06-18T17:29:34.626] [DEBUG] debug-file - Update task entry:default@SignHap input file:C:\Users\wwwmm\.ohos\config\default_TravelJournal_OAQfuWdk35Rb1QA4SLju8yqm-g6XR5r8fdOJpieBQnY=.p7b cache by regenerate.
+[2026-06-18T17:29:34.626] [DEBUG] debug-file - Update task entry:default@SignHap input file:C:\Users\wwwmm\.ohos\config\default_TravelJournal_OAQfuWdk35Rb1QA4SLju8yqm-g6XR5r8fdOJpieBQnY=.p12 cache by regenerate.
+[2026-06-18T17:29:34.626] [DEBUG] debug-file - Update task entry:default@SignHap input file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\outputs\default\entry-default-unsigned.hap cache from map.
+[2026-06-18T17:29:34.626] [DEBUG] debug-file - Update task entry:default@SignHap output file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\outputs\default\entry-default-signed.hap cache.
+[2026-06-18T17:29:34.627] [DEBUG] debug-file - Incremental task entry:default@SignHap post-execution cost:2 ms .
+[2026-06-18T17:29:34.627] [DEBUG] debug-file - Update task entry:default@CollectDebugSymbol input file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\loader_out\default\ets\sourceMaps.map cache by regenerate.
+[2026-06-18T17:29:34.628] [DEBUG] debug-file - Update task entry:default@CollectDebugSymbol input file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\intermediates\libs\default cache by regenerate.
+[2026-06-18T17:29:34.628] [DEBUG] debug-file - Update task entry:default@CollectDebugSymbol output file:E:\wwwmm\Documents\OSS\practice\TravelJournal\entry\build\default\outputs\default\symbol cache.
+[2026-06-18T17:29:34.628] [DEBUG] debug-file - Incremental task entry:default@CollectDebugSymbol post-execution cost:2 ms .
+[2026-06-18T17:29:34.647] [DEBUG] debug-file - hvigor build process will be closed.
+[2026-06-18T17:29:34.647] [DEBUG] debug-file - java daemon socket close code:1000 reason:close by user
+[2026-06-18T17:29:34.651] [DEBUG] debug-file - session manager: send message to worker process.
+[2026-06-18T17:29:34.652] [DEBUG] debug-file - session manager: send message to worker process.
+[2026-06-18T17:29:34.652] [DEBUG] debug-file - watch worker: worker id should be larger than 0. Nothing will be sent to any worker thread.
+[2026-06-18T17:29:34.653] [DEBUG] debug-file - watch worker: worker id should be larger than 0. Nothing will be sent to any worker thread.
