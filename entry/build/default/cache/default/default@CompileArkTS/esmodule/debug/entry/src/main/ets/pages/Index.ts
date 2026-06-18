@@ -4,6 +4,7 @@ if (!("finalizeConstruction" in ViewPU.prototype)) {
 interface Index_Params {
     provinceModel?: ProvinceModel;
     continuationHelper?: ContinuationHelper;
+    badgeManager?: BadgeManager;
     settings?: RenderingContextSettings;
     context2d?: CanvasRenderingContext2D;
     displayWidth?: number;
@@ -14,6 +15,9 @@ interface Index_Params {
     showActionDialog?: boolean;
     actionProvinceId?: string;
     actionProvinceName?: string;
+    badgePopupData?: BadgePopupData | null;
+    pendingBadgePopups?: BadgePopupData[];
+    swiperDisableSwipe?: boolean;
     isDragging?: boolean;
     draggingProvinceId?: string;
     dragStartX?: number;
@@ -29,6 +33,9 @@ import { ProvinceModel, BASE_WIDTH, BASE_HEIGHT } from "@normalized:N&&&entry/sr
 import type { Province } from "@normalized:N&&&entry/src/main/ets/model/DataModel&";
 import { pointInEllipse } from "@normalized:N&&&entry/src/main/ets/common/PointInPolygon&";
 import { ContinuationHelper } from "@normalized:N&&&entry/src/main/ets/common/ContinuationHelper&";
+import { BadgeManager } from "@normalized:N&&&entry/src/main/ets/common/BadgeManager&";
+import type { BadgePopupData } from "@normalized:N&&&entry/src/main/ets/common/BadgeManager&";
+import { Badges } from "@normalized:N&&&entry/src/main/ets/pages/Badges&";
 // ==================== 颜色常量 ====================
 const COLOR_BG = '#FFF9F0'; // 画布背景色
 const COLOR_LIGHTED = '#F5A623'; // 打卡后的填充色（金色）
@@ -52,6 +59,7 @@ class Index extends ViewPU {
         }
         this.provinceModel = ProvinceModel.getInstance();
         this.continuationHelper = ContinuationHelper.getInstance();
+        this.badgeManager = BadgeManager.getInstance();
         this.settings = new RenderingContextSettings(true);
         this.context2d = new CanvasRenderingContext2D(this.settings);
         this.__displayWidth = new ObservedPropertySimplePU(0, this, "displayWidth");
@@ -62,6 +70,9 @@ class Index extends ViewPU {
         this.__showActionDialog = new ObservedPropertySimplePU(false, this, "showActionDialog");
         this.__actionProvinceId = new ObservedPropertySimplePU('', this, "actionProvinceId");
         this.__actionProvinceName = new ObservedPropertySimplePU('', this, "actionProvinceName");
+        this.__badgePopupData = new ObservedPropertyObjectPU(null, this, "badgePopupData");
+        this.__pendingBadgePopups = new ObservedPropertyObjectPU([], this, "pendingBadgePopups");
+        this.__swiperDisableSwipe = new ObservedPropertySimplePU(false, this, "swiperDisableSwipe");
         this.isDragging = false;
         this.draggingProvinceId = '';
         this.dragStartX = 0;
@@ -79,6 +90,9 @@ class Index extends ViewPU {
         }
         if (params.continuationHelper !== undefined) {
             this.continuationHelper = params.continuationHelper;
+        }
+        if (params.badgeManager !== undefined) {
+            this.badgeManager = params.badgeManager;
         }
         if (params.settings !== undefined) {
             this.settings = params.settings;
@@ -109,6 +123,15 @@ class Index extends ViewPU {
         }
         if (params.actionProvinceName !== undefined) {
             this.actionProvinceName = params.actionProvinceName;
+        }
+        if (params.badgePopupData !== undefined) {
+            this.badgePopupData = params.badgePopupData;
+        }
+        if (params.pendingBadgePopups !== undefined) {
+            this.pendingBadgePopups = params.pendingBadgePopups;
+        }
+        if (params.swiperDisableSwipe !== undefined) {
+            this.swiperDisableSwipe = params.swiperDisableSwipe;
         }
         if (params.isDragging !== undefined) {
             this.isDragging = params.isDragging;
@@ -146,6 +169,9 @@ class Index extends ViewPU {
         this.__showActionDialog.purgeDependencyOnElmtId(rmElmtId);
         this.__actionProvinceId.purgeDependencyOnElmtId(rmElmtId);
         this.__actionProvinceName.purgeDependencyOnElmtId(rmElmtId);
+        this.__badgePopupData.purgeDependencyOnElmtId(rmElmtId);
+        this.__pendingBadgePopups.purgeDependencyOnElmtId(rmElmtId);
+        this.__swiperDisableSwipe.purgeDependencyOnElmtId(rmElmtId);
     }
     aboutToBeDeleted() {
         this.__displayWidth.aboutToBeDeleted();
@@ -156,11 +182,15 @@ class Index extends ViewPU {
         this.__showActionDialog.aboutToBeDeleted();
         this.__actionProvinceId.aboutToBeDeleted();
         this.__actionProvinceName.aboutToBeDeleted();
+        this.__badgePopupData.aboutToBeDeleted();
+        this.__pendingBadgePopups.aboutToBeDeleted();
+        this.__swiperDisableSwipe.aboutToBeDeleted();
         SubscriberManager.Get().delete(this.id__());
         this.aboutToBeDeletedInternal();
     }
     private provinceModel: ProvinceModel;
     private continuationHelper: ContinuationHelper;
+    private badgeManager: BadgeManager;
     private settings: RenderingContextSettings;
     private context2d: CanvasRenderingContext2D;
     // Canvas 实际显示宽度（由 onAreaChange 动态获取）
@@ -224,6 +254,29 @@ class Index extends ViewPU {
     set actionProvinceName(newValue: string) {
         this.__actionProvinceName.set(newValue);
     }
+    // 奖牌解锁弹窗
+    private __badgePopupData: ObservedPropertyObjectPU<BadgePopupData | null>;
+    get badgePopupData() {
+        return this.__badgePopupData.get();
+    }
+    set badgePopupData(newValue: BadgePopupData | null) {
+        this.__badgePopupData.set(newValue);
+    }
+    private __pendingBadgePopups: ObservedPropertyObjectPU<BadgePopupData[]>;
+    get pendingBadgePopups() {
+        return this.__pendingBadgePopups.get();
+    }
+    set pendingBadgePopups(newValue: BadgePopupData[]) {
+        this.__pendingBadgePopups.set(newValue);
+    }
+    // 拖动时禁用 Swiper 滑动，避免冲突
+    private __swiperDisableSwipe: ObservedPropertySimplePU<boolean>;
+    get swiperDisableSwipe() {
+        return this.__swiperDisableSwipe.get();
+    }
+    set swiperDisableSwipe(newValue: boolean) {
+        this.__swiperDisableSwipe.set(newValue);
+    }
     // 拖动状态
     private isDragging: boolean;
     private draggingProvinceId: string;
@@ -237,6 +290,7 @@ class Index extends ViewPU {
     async aboutToAppear(): Promise<void> {
         const context = getContext(this) as common.UIAbilityContext;
         await this.provinceModel.init(context);
+        await this.badgeManager.init(context);
         this.refreshProvinces();
         // 更新自由流转回调（首页不追踪具体省份）
         this.continuationHelper.updateCallbacks(() => {
@@ -265,6 +319,50 @@ class Index extends ViewPU {
     refreshProvinces(): void {
         this.provinces = [...this.provinceModel.getProvinces()];
         this.drawMap();
+    }
+    // ==================== 奖牌解锁检测 ====================
+    /**
+     * 检测奖牌解锁并弹出通知
+     * 在点亮省份后调用
+     */
+    async checkAndShowBadgeUnlock(): Promise<void> {
+        const lightedIds = this.provinceModel.getProvinces()
+            .filter(p => p.isLighted)
+            .map(p => p.id);
+        const newlyUnlockedIds = await this.badgeManager.checkAllBadges(lightedIds);
+        if (newlyUnlockedIds.length === 0) {
+            return;
+        }
+        // 构建弹窗数据队列
+        const popups: BadgePopupData[] = [];
+        for (const badgeId of newlyUnlockedIds) {
+            const badge = this.badgeManager.getBadgeById(badgeId);
+            if (badge) {
+                const provinceNames = badge.requiredProvinceIds.map(pid => {
+                    const province = this.provinceModel.getProvinceById(pid);
+                    return province ? province.name : pid;
+                });
+                popups.push({ badge, provinceNames });
+            }
+        }
+        // 依次显示弹窗
+        this.pendingBadgePopups = popups;
+        this.showNextBadgePopup();
+    }
+    /** 显示下一个奖牌弹窗 */
+    showNextBadgePopup(): void {
+        if (this.pendingBadgePopups.length === 0) {
+            return;
+        }
+        this.badgePopupData = this.pendingBadgePopups.shift()!;
+    }
+    /** 关闭奖牌弹窗并显示下一个 */
+    onBadgePopupClose(): void {
+        this.badgePopupData = null;
+        // 延迟显示下一个，避免动画冲突
+        setTimeout(() => {
+            this.showNextBadgePopup();
+        }, 300);
     }
     // ==================== 动态布局计算 ====================
     /**
@@ -421,6 +519,7 @@ class Index extends ViewPU {
         // 启动长按计时器（500ms 后进入拖动模式）
         this.longPressTimer = setTimeout(() => {
             this.isDragging = true;
+            this.swiperDisableSwipe = true;
             this.drawMap();
         }, 500);
     }
@@ -437,6 +536,7 @@ class Index extends ViewPU {
         if (distance > 3 && !this.isDragging) {
             clearTimeout(this.longPressTimer);
             this.isDragging = true;
+            this.swiperDisableSwipe = true;
         }
         if (this.isDragging) {
             this.dragMoved = true;
@@ -485,6 +585,7 @@ class Index extends ViewPU {
         this.isDragging = false;
         this.draggingProvinceId = '';
         this.dragMoved = false;
+        this.swiperDisableSwipe = false;
         this.drawMap();
     }
     // ==================== 点击处理 ====================
@@ -501,6 +602,8 @@ class Index extends ViewPU {
             await this.provinceModel.lightProvince(province.id);
             this.refreshProvinces();
             this.showToastMsg(`已点亮 ${province.name}！`);
+            // 检测奖牌解锁
+            await this.checkAndShowBadgeUnlock();
         }
     }
     // ==================== 工具方法 ====================
@@ -526,8 +629,34 @@ class Index extends ViewPU {
         }, Column);
         // 顶部标题栏
         this.TitleBar.bind(this)();
-        // Canvas 地图区域（填满中间区域）
-        this.MapArea.bind(this)();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // Swiper 区域：地图 + 奖牌
+            Swiper.create();
+            // Swiper 区域：地图 + 奖牌
+            Swiper.layoutWeight(1);
+            // Swiper 区域：地图 + 奖牌
+            Swiper.indicator(true);
+            // Swiper 区域：地图 + 奖牌
+            Swiper.indicatorStyle({
+                selectedColor: '#F5A623',
+                color: '#CCCCCC',
+                size: 8
+            });
+            // Swiper 区域：地图 + 奖牌
+            Swiper.loop(false);
+            // Swiper 区域：地图 + 奖牌
+            Swiper.disableSwipe(this.swiperDisableSwipe);
+            // Swiper 区域：地图 + 奖牌
+            Swiper.duration(300);
+            // Swiper 区域：地图 + 奖牌
+            Swiper.curve(Curve.EaseInOut);
+        }, Swiper);
+        // 第一页：地图
+        this.MapPage.bind(this)();
+        // 第二页：奖牌
+        this.BadgePage.bind(this)();
+        // Swiper 区域：地图 + 奖牌
+        Swiper.pop();
         // 底部统计信息
         this.StatsBar.bind(this)();
         Column.pop();
@@ -552,6 +681,21 @@ class Index extends ViewPU {
             if (this.showActionDialog) {
                 this.ifElseBranchUpdateFunction(0, () => {
                     this.ActionDialogView.bind(this)();
+                });
+            }
+            // 奖牌解锁弹窗
+            else {
+                this.ifElseBranchUpdateFunction(1, () => {
+                });
+            }
+        }, If);
+        If.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            If.create();
+            // 奖牌解锁弹窗
+            if (this.badgePopupData !== null) {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    this.BadgeUnlockPopup.bind(this)();
                 });
             }
             else {
@@ -601,7 +745,7 @@ class Index extends ViewPU {
         // 自由流转按钮
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create('长按拖动可移动省份');
+            Text.create('左滑查看成就');
             Text.fontSize(13);
             Text.fontColor('#999999');
             Text.margin({ right: 16 });
@@ -609,12 +753,12 @@ class Index extends ViewPU {
         Text.pop();
         Row.pop();
     }
-    /** Canvas 地图区域（填满中间区域，与上下栏平齐） */
-    MapArea(parent = null) {
+    /** 地图页面（Swiper 第一页） */
+    MapPage(parent = null) {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Canvas.create(this.context2d);
             Canvas.width('100%');
-            Canvas.layoutWeight(1);
+            Canvas.height('100%');
             Canvas.backgroundColor(COLOR_BG);
             Canvas.onReady(() => {
                 this.drawMap();
@@ -642,6 +786,24 @@ class Index extends ViewPU {
             });
         }, Canvas);
         Canvas.pop();
+    }
+    /** 奖牌页面（Swiper 第二页） */
+    BadgePage(parent = null) {
+        {
+            this.observeComponentCreation2((elmtId, isInitialRender) => {
+                if (isInitialRender) {
+                    let componentCall = new Badges(this, {}, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 582, col: 5 });
+                    ViewPU.create(componentCall);
+                    let paramsLambda = () => {
+                        return {};
+                    };
+                    componentCall.paramsGenerator_ = paramsLambda;
+                }
+                else {
+                    this.updateStateVarsOfChildByElmtId(elmtId, {});
+                }
+            }, { name: "Badges" });
+        }
     }
     /** 底部统计栏 */
     StatsBar(parent = null) {
@@ -774,6 +936,94 @@ class Index extends ViewPU {
             });
         }, Text);
         // 关闭按钮
+        Text.pop();
+        Column.pop();
+        Column.pop();
+    }
+    /** 奖牌解锁弹窗 */
+    BadgeUnlockPopup(parent = null) {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.width('100%');
+            Column.height('100%');
+            Column.justifyContent(FlexAlign.Center);
+            Column.backgroundColor('rgba(0,0,0,0.5)');
+            Column.onClick(() => {
+                this.onBadgePopupClose();
+            });
+            Column.onAppear(() => {
+                setTimeout(() => {
+                    if (this.badgePopupData !== null) {
+                        this.onBadgePopupClose();
+                    }
+                }, 3000);
+            });
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.width('70%');
+            Column.backgroundColor('#FFFFFF');
+            Column.borderRadius(20);
+            Column.alignItems(HorizontalAlign.Center);
+            Column.shadow({ radius: 20, color: '#33000000', offsetY: 4 });
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // 大号 Emoji
+            Text.create(this.badgePopupData?.badge.emoji ?? '');
+            // 大号 Emoji
+            Text.fontSize(80);
+            // 大号 Emoji
+            Text.margin({ top: 32, bottom: 16 });
+        }, Text);
+        // 大号 Emoji
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // 奖牌名称
+            Text.create(this.badgePopupData?.badge.name ?? '');
+            // 奖牌名称
+            Text.fontSize(24);
+            // 奖牌名称
+            Text.fontWeight(FontWeight.Bold);
+            // 奖牌名称
+            Text.fontColor('#333333');
+            // 奖牌名称
+            Text.margin({ bottom: 8 });
+        }, Text);
+        // 奖牌名称
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // 解锁提示
+            Text.create('奖牌解锁！');
+            // 解锁提示
+            Text.fontSize(16);
+            // 解锁提示
+            Text.fontColor('#F5A623');
+            // 解锁提示
+            Text.fontWeight(FontWeight.Bold);
+            // 解锁提示
+            Text.margin({ bottom: 12 });
+        }, Text);
+        // 解锁提示
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // 所需省份列表
+            Text.create(this.badgePopupData?.provinceNames.join('、') ?? '');
+            // 所需省份列表
+            Text.fontSize(13);
+            // 所需省份列表
+            Text.fontColor('#666666');
+            // 所需省份列表
+            Text.maxLines(3);
+            // 所需省份列表
+            Text.textOverflow({ overflow: TextOverflow.Ellipsis });
+            // 所需省份列表
+            Text.textAlign(TextAlign.Center);
+            // 所需省份列表
+            Text.padding({ left: 24, right: 24 });
+            // 所需省份列表
+            Text.margin({ bottom: 24 });
+        }, Text);
+        // 所需省份列表
         Text.pop();
         Column.pop();
         Column.pop();
