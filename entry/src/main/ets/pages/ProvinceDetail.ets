@@ -6,12 +6,15 @@
  * 3. 长按删除回忆（弹出确认框）
  * 4. 图片横向滑动浏览
  * 5. 支持自由流转（continuable）
+ * 6. 画板功能（bindSheet 半模态弹窗）
  */
 import router from '@ohos.router';
 import common from '@ohos.app.ability.common';
 import { ProvinceModel, Province, Memory } from '../model/DataModel';
 import { FileHelper } from '../common/FileHelper';
 import { ContinuationHelper, ContinuationData } from '../common/ContinuationHelper';
+import { DrawDataManager } from '../common/DrawDataManager';
+import { DrawBoard } from '../components/DrawBoard';
 import photoAccessHelper from '@ohos.file.photoAccessHelper';
 
 @Entry
@@ -20,6 +23,7 @@ struct ProvinceDetail {
   private provinceModel: ProvinceModel = ProvinceModel.getInstance();
   private fileHelper: FileHelper = FileHelper.getInstance();
   private continuationHelper: ContinuationHelper = ContinuationHelper.getInstance();
+  private drawDataManager: DrawDataManager = DrawDataManager.getInstance();
 
   // 省份信息
   @State provinceId: string = '';
@@ -39,6 +43,9 @@ struct ProvinceDetail {
   // Toast 提示
   @State toastMsg: string = '';
   @State showToast: boolean = false;
+
+  // 画板弹窗
+  @State showDrawBoard: boolean = false;
 
   // ==================== 生命周期 ====================
 
@@ -62,6 +69,10 @@ struct ProvinceDetail {
       // 设置当前省份 ID 到 AppStorage（供自由流转使用）
       AppStorage.setOrCreate<string>('current_province_id', this.provinceId);
     }
+
+    // 初始化画板数据管理器
+    const context = getContext(this) as common.UIAbilityContext;
+    this.drawDataManager.init(context);
 
     // 更新自由流转回调（使用 updateCallbacks 避免重复注册）
     this.continuationHelper.updateCallbacks(
@@ -195,8 +206,14 @@ struct ProvinceDetail {
         // 回忆列表
         this.MemoryList()
 
-        // 底部添加按钮
-        this.AddButton()
+        // 底部按钮区域
+        Column() {
+          // 添加回忆按钮
+          this.AddButton()
+
+          // 打开画板按钮
+          this.DrawBoardButton()
+        }
       }
       .width('100%')
       .height('100%')
@@ -219,6 +236,14 @@ struct ProvinceDetail {
     }
     .width('100%')
     .height('100%')
+    .bindSheet($$this.showDrawBoard, this.DrawBoardSheetContent, {
+      height: SheetSize.LARGE,
+      dragBar: true,
+      backgroundColor: Color.White,
+      onDisappear: () => {
+        // 画板关闭时保存数据（DrawBoard 的 aboutToDisappear 中处理）
+      }
+    })
   }
 
   // ==================== 子组件 ====================
@@ -381,8 +406,41 @@ struct ProvinceDetail {
     }
     .width('100%')
     .justifyContent(FlexAlign.Center)
-    .padding({ top: 12, bottom: 12 })
+    .padding({ top: 12, bottom: 4 })
     .backgroundColor('#FFF9F0')
+  }
+
+  /** 打开画板按钮 */
+  @Builder
+  DrawBoardButton() {
+    Row() {
+      Button('\u{1F58C} 打开画板')
+        .fontSize(15)
+        .fontColor('#FF6B6B')
+        .backgroundColor('#FFF0F0')
+        .borderRadius(24)
+        .width('80%')
+        .height(44)
+        .borderWidth(1)
+        .borderColor('#FF6B6B')
+        .onClick(() => {
+          this.showDrawBoard = true;
+        })
+    }
+    .width('100%')
+    .justifyContent(FlexAlign.Center)
+    .padding({ top: 4, bottom: 12 })
+    .backgroundColor('#FFF9F0')
+  }
+
+  /** 画板弹窗内容 */
+  @Builder
+  DrawBoardSheetContent() {
+    Column() {
+      DrawBoard({ provinceId: this.provinceId })
+    }
+    .width('100%')
+    .height('100%')
   }
 
   /** 添加回忆对话框 */
