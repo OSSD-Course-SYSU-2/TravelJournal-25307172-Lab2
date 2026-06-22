@@ -10,6 +10,7 @@
  */
 import router from '@ohos.router';
 import common from '@ohos.app.ability.common';
+import display from '@ohos.display';
 import { ProvinceModel, Province, Memory } from '../model/DataModel';
 import { FileHelper } from '../common/FileHelper';
 import { ContinuationHelper, ContinuationData } from '../common/ContinuationHelper';
@@ -46,10 +47,19 @@ struct ProvinceDetail {
 
   // 画板弹窗
   @State showDrawBoard: boolean = false;
+  // 是否允许关闭画板（仅关闭按钮可触发）
+  private allowDismissDrawBoard: boolean = false;
+  // 画板弹窗高度（动态计算，基于屏幕高度的 85%）
+  @State sheetHeight: number = 600;
+  // 画板弹窗宽度（动态计算，充满屏幕宽度）
+  @State sheetWidth: number = 360;
 
   // ==================== 生命周期 ====================
 
   async aboutToAppear(): Promise<void> {
+    // 动态计算画板弹窗尺寸（一多适配）
+    this.calcSheetSize();
+
     // 从路由参数获取省份 ID
     const params = router.getParams() as Record<string, string>;
     if (params && params['provinceId']) {
@@ -195,6 +205,31 @@ struct ProvinceDetail {
     }, 2000);
   }
 
+  /** 动态计算画板弹窗尺寸 - 一多适配：屏幕宽度的 100%，高度的 85% */
+  calcSheetSize(): void {
+    try {
+      const displayInfo = display.getDefaultDisplaySync();
+      const screenHeight = px2vp(displayInfo.height);
+      const screenWidth = px2vp(displayInfo.width);
+      this.sheetHeight = Math.floor(screenHeight * 0.85);
+      this.sheetWidth = Math.floor(screenWidth);
+    } catch (e) {
+      this.sheetHeight = 600;
+      this.sheetWidth = 360;
+    }
+  }
+
+  /** 打开画板 */
+  openDrawBoard(): void {
+    this.showDrawBoard = true;
+  }
+
+  /** 关闭画板 */
+  closeDrawBoard(): void {
+    this.allowDismissDrawBoard = true;
+    this.showDrawBoard = false;
+  }
+
   // ==================== 构建界面 ====================
 
   build() {
@@ -218,6 +253,7 @@ struct ProvinceDetail {
       .width('100%')
       .height('100%')
       .backgroundColor('#FFF9F0')
+      .hitTestBehavior(this.showDrawBoard ? HitTestMode.None : HitTestMode.Default)
 
       // 添加回忆对话框
       if (this.showAddDialog) {
@@ -237,11 +273,23 @@ struct ProvinceDetail {
     .width('100%')
     .height('100%')
     .bindSheet($$this.showDrawBoard, this.DrawBoardSheetContent, {
-      height: SheetSize.LARGE,
-      dragBar: true,
+      height: this.sheetHeight,
+      width: this.sheetWidth,
+      dragBar: false,
+      showClose: false,
       backgroundColor: Color.White,
+      onWillDismiss: (dismissAction: DismissSheetAction) => {
+        if (this.allowDismissDrawBoard) {
+          dismissAction.dismiss();
+        }
+      },
+      onWillSpringBackWhenDismiss: (springBackAction: SpringBackAction) => {
+        if (!this.allowDismissDrawBoard) {
+          springBackAction.springBack();
+        }
+      },
       onDisappear: () => {
-        // 画板关闭时保存数据（DrawBoard 的 aboutToDisappear 中处理）
+        this.allowDismissDrawBoard = false;
       }
     })
   }
@@ -262,7 +310,7 @@ struct ProvinceDetail {
 
       // 省份名称
       Text(this.provinceName)
-        .fontSize(20)
+        .fontSize('20fp')
         .fontWeight(FontWeight.Bold)
         .fontColor('#333333')
         .margin({ left: 12 })
@@ -271,7 +319,7 @@ struct ProvinceDetail {
 
       // 自由流转按钮
       Text('\u21C4')  // ⇄ 流转图标
-        .fontSize(20)
+        .fontSize('20fp')
         .fontColor('#666666')
         .margin({ right: 12 })
         .onClick(() => {
@@ -280,7 +328,7 @@ struct ProvinceDetail {
 
       // 回忆数量
       Text(`${this.memories.length} 条回忆`)
-        .fontSize(13)
+        .fontSize('13fp')
         .fontColor('#999999')
         .margin({ right: 16 })
     }
@@ -297,12 +345,12 @@ struct ProvinceDetail {
       // 空状态
       Column() {
         Text('\u270F')  // ✏
-          .fontSize(48)
+          .fontSize('48fp')
           .fontColor('#CCCCCC')
           .margin({ bottom: 16 })
 
         Text('还没有回忆，点击下方按钮添加吧')
-          .fontSize(14)
+          .fontSize('14fp')
           .fontColor('#999999')
       }
       .width('100%')
@@ -331,14 +379,14 @@ struct ProvinceDetail {
       // 时间
       Row() {
         Text(this.formatTime(memory.createTime))
-          .fontSize(12)
+          .fontSize('12fp')
           .fontColor('#999999')
 
         Blank()
 
         // 删除按钮
         Text('删除')
-          .fontSize(13)
+          .fontSize('13fp')
           .fontColor('#999999')
           .onClick(() => {
             this.deletingMemoryId = memory.id;
@@ -351,7 +399,7 @@ struct ProvinceDetail {
       // 文字内容
       if (memory.text) {
         Text(memory.text)
-          .fontSize(15)
+          .fontSize('15fp')
           .fontColor('#333333')
           .lineHeight(22)
           .width('100%')
@@ -396,7 +444,7 @@ struct ProvinceDetail {
   AddButton() {
     Row() {
       Button('+ 添加新回忆')
-        .fontSize(16)
+        .fontSize('16fp')
         .fontColor('#FFFFFF')
         .backgroundColor('#FF6B6B')
         .borderRadius(24)
@@ -415,7 +463,7 @@ struct ProvinceDetail {
   DrawBoardButton() {
     Row() {
       Button('\u{1F58C} 打开画板')
-        .fontSize(15)
+        .fontSize('15fp')
         .fontColor('#FF6B6B')
         .backgroundColor('#FFF0F0')
         .borderRadius(24)
@@ -424,7 +472,7 @@ struct ProvinceDetail {
         .borderWidth(1)
         .borderColor('#FF6B6B')
         .onClick(() => {
-          this.showDrawBoard = true;
+          this.openDrawBoard();
         })
     }
     .width('100%')
@@ -437,7 +485,9 @@ struct ProvinceDetail {
   @Builder
   DrawBoardSheetContent() {
     Column() {
-      DrawBoard({ provinceId: this.provinceId })
+      DrawBoard({ provinceId: this.provinceId, onClose: () => {
+        this.closeDrawBoard();
+      } })
     }
     .width('100%')
     .height('100%')
@@ -450,7 +500,7 @@ struct ProvinceDetail {
       Column() {
         // 标题
         Text('添加新回忆')
-          .fontSize(18)
+          .fontSize('18fp')
           .fontWeight(FontWeight.Bold)
           .fontColor('#333333')
           .margin({ bottom: 16 })
@@ -459,7 +509,7 @@ struct ProvinceDetail {
         TextArea({ placeholder: '写下你的旅行回忆（最多200字）...' })
           .width('100%')
           .height(100)
-          .fontSize(14)
+          .fontSize('14fp')
           .fontColor('#333333')
           .placeholderColor('#CCCCCC')
           .backgroundColor('#F5F5F5')
@@ -484,7 +534,7 @@ struct ProvinceDetail {
 
                 // 删除按钮
                 Text('\u00D7')  // ×
-                  .fontSize(16)
+                  .fontSize('16fp')
                   .fontColor('#FFFFFF')
                   .width(20)
                   .height(20)
@@ -510,7 +560,7 @@ struct ProvinceDetail {
         // 选择照片按钮
         if (this.savedPhotoUris.length < 3) {
           Button(`选择照片（${this.savedPhotoUris.length}/3）`)
-            .fontSize(13)
+            .fontSize('13fp')
             .fontColor('#FF6B6B')
             .backgroundColor('#FFF0F0')
             .borderRadius(8)
@@ -523,7 +573,7 @@ struct ProvinceDetail {
         // 操作按钮
         Row() {
           Button('取消')
-            .fontSize(14)
+            .fontSize('14fp')
             .fontColor('#666666')
             .backgroundColor('#F0F0F0')
             .borderRadius(8)
@@ -533,7 +583,7 @@ struct ProvinceDetail {
             })
 
           Button('添加')
-            .fontSize(14)
+            .fontSize('14fp')
             .fontColor('#FFFFFF')
             .backgroundColor('#FF6B6B')
             .borderRadius(8)
@@ -561,19 +611,19 @@ struct ProvinceDetail {
     Column() {
       Column() {
         Text('确认删除')
-          .fontSize(18)
+          .fontSize('18fp')
           .fontWeight(FontWeight.Bold)
           .fontColor('#333333')
           .margin({ bottom: 12 })
 
         Text('删除后无法恢复，是否确认？')
-          .fontSize(14)
+          .fontSize('14fp')
           .fontColor('#666666')
           .margin({ bottom: 24 })
 
         Row() {
           Button('取消')
-            .fontSize(14)
+            .fontSize('14fp')
             .fontColor('#666666')
             .backgroundColor('#F0F0F0')
             .borderRadius(8)
@@ -583,7 +633,7 @@ struct ProvinceDetail {
             })
 
           Button('删除')
-            .fontSize(14)
+            .fontSize('14fp')
             .fontColor('#FFFFFF')
             .backgroundColor('#FF6B6B')
             .borderRadius(8)
@@ -610,7 +660,7 @@ struct ProvinceDetail {
   ToastView() {
     Column() {
       Text(this.toastMsg)
-        .fontSize(14)
+        .fontSize('14fp')
         .fontColor('#FFFFFF')
         .padding({ left: 20, right: 20, top: 10, bottom: 10 })
         .backgroundColor('#CC333333')

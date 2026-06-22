@@ -518,7 +518,7 @@ struct Index {
   TitleBar() {
     Row() {
       Text('TravelJournal')
-        .fontSize(22)
+        .fontSize('22fp')
         .fontWeight(FontWeight.Bold)
         .fontColor('#333333')
         .margin({ left: 16 })
@@ -527,7 +527,7 @@ struct Index {
 
       // 自由流转按钮
       Text('\u21C4')  // ⇄ 流转图标
-        .fontSize(20)
+        .fontSize('20fp')
         .fontColor('#666666')
         .margin({ right: 12 })
         .onClick(() => {
@@ -535,7 +535,7 @@ struct Index {
         })
 
       Text('左滑查看成就')
-        .fontSize(13)
+        .fontSize('13fp')
         .fontColor('#999999')
         .margin({ right: 16 })
     }
@@ -587,7 +587,7 @@ struct Index {
   StatsBar() {
     Row() {
       Text(`已点亮 ${this.provinces.filter(p => p.isLighted).length} / ${this.provinces.length} 个省级行政区`)
-        .fontSize(14)
+        .fontSize('14fp')
         .fontColor('#666666')
     }
     .width('100%')
@@ -602,7 +602,7 @@ struct Index {
   ToastView() {
     Column() {
       Text(this.toastMsg)
-        .fontSize(14)
+        .fontSize('14fp')
         .fontColor('#FFFFFF')
         .padding({ left: 20, right: 20, top: 10, bottom: 10 })
         .backgroundColor('#CC333333')
@@ -619,7 +619,7 @@ struct Index {
     Column() {
       Column() {
         Text(this.actionProvinceName)
-          .fontSize(18)
+          .fontSize('18fp')
           .fontWeight(FontWeight.Bold)
           .fontColor('#333333')
           .margin({ top: 24, bottom: 20 })
@@ -628,7 +628,7 @@ struct Index {
         Button('查看手账')
           .width('80%')
           .height(44)
-          .fontSize(16)
+          .fontSize('16fp')
           .fontColor('#FFFFFF')
           .backgroundColor('#F5A623')
           .borderRadius(8)
@@ -644,7 +644,7 @@ struct Index {
         Button('取消打卡')
           .width('80%')
           .height(44)
-          .fontSize(16)
+          .fontSize('16fp')
           .fontColor('#E74C3C')
           .backgroundColor('#FFFFFF')
           .borderRadius(8)
@@ -659,7 +659,7 @@ struct Index {
 
         // 关闭按钮
         Text('关闭')
-          .fontSize(14)
+          .fontSize('14fp')
           .fontColor('#999999')
           .margin({ bottom: 16 })
           .onClick(() => {
@@ -684,26 +684,26 @@ struct Index {
       Column() {
         // 大号 Emoji
         Text(this.badgePopupData?.badge.emoji ?? '')
-          .fontSize(80)
+          .fontSize('80fp')
           .margin({ top: 32, bottom: 16 })
 
         // 奖牌名称
         Text(this.badgePopupData?.badge.name ?? '')
-          .fontSize(24)
+          .fontSize('24fp')
           .fontWeight(FontWeight.Bold)
           .fontColor('#333333')
           .margin({ bottom: 8 })
 
         // 解锁提示
         Text('奖牌解锁！')
-          .fontSize(16)
+          .fontSize('16fp')
           .fontColor('#F5A623')
           .fontWeight(FontWeight.Bold)
           .margin({ bottom: 12 })
 
         // 所需省份列表
         Text(this.badgePopupData?.provinceNames.join('、') ?? '')
-          .fontSize(13)
+          .fontSize('13fp')
           .fontColor('#666666')
           .maxLines(3)
           .textOverflow({ overflow: TextOverflow.Ellipsis })

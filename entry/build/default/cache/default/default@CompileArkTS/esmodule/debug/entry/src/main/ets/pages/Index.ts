@@ -718,7 +718,7 @@ class Index extends ViewPU {
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create('TravelJournal');
-            Text.fontSize(22);
+            Text.fontSize('22fp');
             Text.fontWeight(FontWeight.Bold);
             Text.fontColor('#333333');
             Text.margin({ left: 16 });
@@ -732,7 +732,7 @@ class Index extends ViewPU {
             // 自由流转按钮
             Text.create('\u21C4');
             // 自由流转按钮
-            Text.fontSize(20);
+            Text.fontSize('20fp');
             // 自由流转按钮
             Text.fontColor('#666666');
             // 自由流转按钮
@@ -746,7 +746,7 @@ class Index extends ViewPU {
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create('左滑查看成就');
-            Text.fontSize(13);
+            Text.fontSize('13fp');
             Text.fontColor('#999999');
             Text.margin({ right: 16 });
         }, Text);
@@ -817,7 +817,7 @@ class Index extends ViewPU {
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create(`已点亮 ${this.provinces.filter(p => p.isLighted).length} / ${this.provinces.length} 个省级行政区`);
-            Text.fontSize(14);
+            Text.fontSize('14fp');
             Text.fontColor('#666666');
         }, Text);
         Text.pop();
@@ -833,7 +833,7 @@ class Index extends ViewPU {
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create(this.toastMsg);
-            Text.fontSize(14);
+            Text.fontSize('14fp');
             Text.fontColor('#FFFFFF');
             Text.padding({ left: 20, right: 20, top: 10, bottom: 10 });
             Text.backgroundColor('#CC333333');
@@ -860,7 +860,7 @@ class Index extends ViewPU {
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create(this.actionProvinceName);
-            Text.fontSize(18);
+            Text.fontSize('18fp');
             Text.fontWeight(FontWeight.Bold);
             Text.fontColor('#333333');
             Text.margin({ top: 24, bottom: 20 });
@@ -874,7 +874,7 @@ class Index extends ViewPU {
             // 查看手账按钮
             Button.height(44);
             // 查看手账按钮
-            Button.fontSize(16);
+            Button.fontSize('16fp');
             // 查看手账按钮
             Button.fontColor('#FFFFFF');
             // 查看手账按钮
@@ -900,7 +900,7 @@ class Index extends ViewPU {
             // 取消打卡按钮
             Button.height(44);
             // 取消打卡按钮
-            Button.fontSize(16);
+            Button.fontSize('16fp');
             // 取消打卡按钮
             Button.fontColor('#E74C3C');
             // 取消打卡按钮
@@ -925,7 +925,7 @@ class Index extends ViewPU {
             // 关闭按钮
             Text.create('关闭');
             // 关闭按钮
-            Text.fontSize(14);
+            Text.fontSize('14fp');
             // 关闭按钮
             Text.fontColor('#999999');
             // 关闭按钮
@@ -971,7 +971,7 @@ class Index extends ViewPU {
             // 大号 Emoji
             Text.create(this.badgePopupData?.badge.emoji ?? '');
             // 大号 Emoji
-            Text.fontSize(80);
+            Text.fontSize('80fp');
             // 大号 Emoji
             Text.margin({ top: 32, bottom: 16 });
         }, Text);
@@ -981,7 +981,7 @@ class Index extends ViewPU {
             // 奖牌名称
             Text.create(this.badgePopupData?.badge.name ?? '');
             // 奖牌名称
-            Text.fontSize(24);
+            Text.fontSize('24fp');
             // 奖牌名称
             Text.fontWeight(FontWeight.Bold);
             // 奖牌名称
@@ -995,7 +995,7 @@ class Index extends ViewPU {
             // 解锁提示
             Text.create('奖牌解锁！');
             // 解锁提示
-            Text.fontSize(16);
+            Text.fontSize('16fp');
             // 解锁提示
             Text.fontColor('#F5A623');
             // 解锁提示
@@ -1009,7 +1009,7 @@ class Index extends ViewPU {
             // 所需省份列表
             Text.create(this.badgePopupData?.provinceNames.join('、') ?? '');
             // 所需省份列表
-            Text.fontSize(13);
+            Text.fontSize('13fp');
             // 所需省份列表
             Text.fontColor('#666666');
             // 所需省份列表

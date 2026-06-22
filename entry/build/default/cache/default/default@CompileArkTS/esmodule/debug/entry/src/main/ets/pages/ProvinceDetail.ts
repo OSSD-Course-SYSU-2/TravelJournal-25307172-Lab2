@@ -5,6 +5,7 @@ interface ProvinceDetail_Params {
     provinceModel?: ProvinceModel;
     fileHelper?: FileHelper;
     continuationHelper?: ContinuationHelper;
+    drawDataManager?: DrawDataManager;
     provinceId?: string;
     provinceName?: string;
     memories?: Memory[];
@@ -16,13 +17,21 @@ interface ProvinceDetail_Params {
     deletingMemoryId?: string;
     toastMsg?: string;
     showToast?: boolean;
+    showDrawBoard?: boolean;
+    allowDismissDrawBoard?: boolean;
+    sheetHeight?: number;
+    sheetWidth?: number;
 }
 import router from "@ohos:router";
+import type common from "@ohos:app.ability.common";
+import display from "@ohos:display";
 import { ProvinceModel } from "@normalized:N&&&entry/src/main/ets/model/DataModel&";
 import type { Memory } from "@normalized:N&&&entry/src/main/ets/model/DataModel&";
 import { FileHelper } from "@normalized:N&&&entry/src/main/ets/common/FileHelper&";
 import { ContinuationHelper } from "@normalized:N&&&entry/src/main/ets/common/ContinuationHelper&";
 import type { ContinuationData } from "@normalized:N&&&entry/src/main/ets/common/ContinuationHelper&";
+import { DrawDataManager } from "@normalized:N&&&entry/src/main/ets/common/DrawDataManager&";
+import { DrawBoard } from "@normalized:N&&&entry/src/main/ets/components/DrawBoard&";
 import photoAccessHelper from "@ohos:file.photoAccessHelper";
 class ProvinceDetail extends ViewPU {
     constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
@@ -33,6 +42,7 @@ class ProvinceDetail extends ViewPU {
         this.provinceModel = ProvinceModel.getInstance();
         this.fileHelper = FileHelper.getInstance();
         this.continuationHelper = ContinuationHelper.getInstance();
+        this.drawDataManager = DrawDataManager.getInstance();
         this.__provinceId = new ObservedPropertySimplePU('', this, "provinceId");
         this.__provinceName = new ObservedPropertySimplePU('', this, "provinceName");
         this.__memories = new ObservedPropertyObjectPU([], this, "memories");
@@ -44,6 +54,10 @@ class ProvinceDetail extends ViewPU {
         this.__deletingMemoryId = new ObservedPropertySimplePU('', this, "deletingMemoryId");
         this.__toastMsg = new ObservedPropertySimplePU('', this, "toastMsg");
         this.__showToast = new ObservedPropertySimplePU(false, this, "showToast");
+        this.__showDrawBoard = new ObservedPropertySimplePU(false, this, "showDrawBoard");
+        this.allowDismissDrawBoard = false;
+        this.__sheetHeight = new ObservedPropertySimplePU(600, this, "sheetHeight");
+        this.__sheetWidth = new ObservedPropertySimplePU(360, this, "sheetWidth");
         this.setInitiallyProvidedValue(params);
         this.finalizeConstruction();
     }
@@ -56,6 +70,9 @@ class ProvinceDetail extends ViewPU {
         }
         if (params.continuationHelper !== undefined) {
             this.continuationHelper = params.continuationHelper;
+        }
+        if (params.drawDataManager !== undefined) {
+            this.drawDataManager = params.drawDataManager;
         }
         if (params.provinceId !== undefined) {
             this.provinceId = params.provinceId;
@@ -90,6 +107,18 @@ class ProvinceDetail extends ViewPU {
         if (params.showToast !== undefined) {
             this.showToast = params.showToast;
         }
+        if (params.showDrawBoard !== undefined) {
+            this.showDrawBoard = params.showDrawBoard;
+        }
+        if (params.allowDismissDrawBoard !== undefined) {
+            this.allowDismissDrawBoard = params.allowDismissDrawBoard;
+        }
+        if (params.sheetHeight !== undefined) {
+            this.sheetHeight = params.sheetHeight;
+        }
+        if (params.sheetWidth !== undefined) {
+            this.sheetWidth = params.sheetWidth;
+        }
     }
     updateStateVars(params: ProvinceDetail_Params) {
     }
@@ -105,6 +134,9 @@ class ProvinceDetail extends ViewPU {
         this.__deletingMemoryId.purgeDependencyOnElmtId(rmElmtId);
         this.__toastMsg.purgeDependencyOnElmtId(rmElmtId);
         this.__showToast.purgeDependencyOnElmtId(rmElmtId);
+        this.__showDrawBoard.purgeDependencyOnElmtId(rmElmtId);
+        this.__sheetHeight.purgeDependencyOnElmtId(rmElmtId);
+        this.__sheetWidth.purgeDependencyOnElmtId(rmElmtId);
     }
     aboutToBeDeleted() {
         this.__provinceId.aboutToBeDeleted();
@@ -118,12 +150,16 @@ class ProvinceDetail extends ViewPU {
         this.__deletingMemoryId.aboutToBeDeleted();
         this.__toastMsg.aboutToBeDeleted();
         this.__showToast.aboutToBeDeleted();
+        this.__showDrawBoard.aboutToBeDeleted();
+        this.__sheetHeight.aboutToBeDeleted();
+        this.__sheetWidth.aboutToBeDeleted();
         SubscriberManager.Get().delete(this.id__());
         this.aboutToBeDeletedInternal();
     }
     private provinceModel: ProvinceModel;
     private fileHelper: FileHelper;
     private continuationHelper: ContinuationHelper;
+    private drawDataManager: DrawDataManager;
     // 省份信息
     private __provinceId: ObservedPropertySimplePU<string>;
     get provinceId() {
@@ -205,8 +241,36 @@ class ProvinceDetail extends ViewPU {
     set showToast(newValue: boolean) {
         this.__showToast.set(newValue);
     }
+    // 画板弹窗
+    private __showDrawBoard: ObservedPropertySimplePU<boolean>;
+    get showDrawBoard() {
+        return this.__showDrawBoard.get();
+    }
+    set showDrawBoard(newValue: boolean) {
+        this.__showDrawBoard.set(newValue);
+    }
+    // 是否允许关闭画板（仅关闭按钮可触发）
+    private allowDismissDrawBoard: boolean;
+    // 画板弹窗高度（动态计算，基于屏幕高度的 85%）
+    private __sheetHeight: ObservedPropertySimplePU<number>;
+    get sheetHeight() {
+        return this.__sheetHeight.get();
+    }
+    set sheetHeight(newValue: number) {
+        this.__sheetHeight.set(newValue);
+    }
+    // 画板弹窗宽度（动态计算，充满屏幕宽度）
+    private __sheetWidth: ObservedPropertySimplePU<number>;
+    get sheetWidth() {
+        return this.__sheetWidth.get();
+    }
+    set sheetWidth(newValue: number) {
+        this.__sheetWidth.set(newValue);
+    }
     // ==================== 生命周期 ====================
     async aboutToAppear(): Promise<void> {
+        // 动态计算画板弹窗尺寸（一多适配）
+        this.calcSheetSize();
         // 从路由参数获取省份 ID
         const params = router.getParams() as Record<string, string>;
         if (params && params['provinceId']) {
@@ -224,6 +288,9 @@ class ProvinceDetail extends ViewPU {
             // 设置当前省份 ID 到 AppStorage（供自由流转使用）
             AppStorage.setOrCreate<string>('current_province_id', this.provinceId);
         }
+        // 初始化画板数据管理器
+        const context = getContext(this) as common.UIAbilityContext;
+        this.drawDataManager.init(context);
         // 更新自由流转回调（使用 updateCallbacks 避免重复注册）
         this.continuationHelper.updateCallbacks((): ContinuationData => {
             return { provinceId: this.provinceId, timestamp: Date.now() };
@@ -325,25 +392,77 @@ class ProvinceDetail extends ViewPU {
             this.showToast = false;
         }, 2000);
     }
+    /** 动态计算画板弹窗尺寸 - 一多适配：屏幕宽度的 100%，高度的 85% */
+    calcSheetSize(): void {
+        try {
+            const displayInfo = display.getDefaultDisplaySync();
+            const screenHeight = px2vp(displayInfo.height);
+            const screenWidth = px2vp(displayInfo.width);
+            this.sheetHeight = Math.floor(screenHeight * 0.85);
+            this.sheetWidth = Math.floor(screenWidth);
+        }
+        catch (e) {
+            this.sheetHeight = 600;
+            this.sheetWidth = 360;
+        }
+    }
+    /** 打开画板 */
+    openDrawBoard(): void {
+        this.showDrawBoard = true;
+    }
+    /** 关闭画板 */
+    closeDrawBoard(): void {
+        this.allowDismissDrawBoard = true;
+        this.showDrawBoard = false;
+    }
     // ==================== 构建界面 ====================
     initialRender() {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Stack.create();
             Stack.width('100%');
             Stack.height('100%');
+            Stack.bindSheet({ value: this.showDrawBoard, changeEvent: newValue => { this.showDrawBoard = newValue; } }, { builder: this.DrawBoardSheetContent.bind(this) }, {
+                height: this.sheetHeight,
+                width: this.sheetWidth,
+                dragBar: false,
+                showClose: false,
+                backgroundColor: Color.White,
+                onWillDismiss: (dismissAction: DismissSheetAction) => {
+                    if (this.allowDismissDrawBoard) {
+                        dismissAction.dismiss();
+                    }
+                },
+                onWillSpringBackWhenDismiss: (springBackAction: SpringBackAction) => {
+                    if (!this.allowDismissDrawBoard) {
+                        springBackAction.springBack();
+                    }
+                },
+                onDisappear: () => {
+                    this.allowDismissDrawBoard = false;
+                }
+            });
         }, Stack);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Column.create();
             Column.width('100%');
             Column.height('100%');
             Column.backgroundColor('#FFF9F0');
+            Column.hitTestBehavior(this.showDrawBoard ? HitTestMode.None : HitTestMode.Default);
         }, Column);
         // 顶部导航栏
         this.NavigationBar.bind(this)();
         // 回忆列表
         this.MemoryList.bind(this)();
-        // 底部添加按钮
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // 底部按钮区域
+            Column.create();
+        }, Column);
+        // 添加回忆按钮
         this.AddButton.bind(this)();
+        // 打开画板按钮
+        this.DrawBoardButton.bind(this)();
+        // 底部按钮区域
+        Column.pop();
         Column.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             If.create();
@@ -419,7 +538,7 @@ class ProvinceDetail extends ViewPU {
             // 省份名称
             Text.create(this.provinceName);
             // 省份名称
-            Text.fontSize(20);
+            Text.fontSize('20fp');
             // 省份名称
             Text.fontWeight(FontWeight.Bold);
             // 省份名称
@@ -437,7 +556,7 @@ class ProvinceDetail extends ViewPU {
             // 自由流转按钮
             Text.create('\u21C4');
             // 自由流转按钮
-            Text.fontSize(20);
+            Text.fontSize('20fp');
             // 自由流转按钮
             Text.fontColor('#666666');
             // 自由流转按钮
@@ -453,7 +572,7 @@ class ProvinceDetail extends ViewPU {
             // 回忆数量
             Text.create(`${this.memories.length} 条回忆`);
             // 回忆数量
-            Text.fontSize(13);
+            Text.fontSize('13fp');
             // 回忆数量
             Text.fontColor('#999999');
             // 回忆数量
@@ -481,14 +600,14 @@ class ProvinceDetail extends ViewPU {
                     }, Column);
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         Text.create('\u270F');
-                        Text.fontSize(48);
+                        Text.fontSize('48fp');
                         Text.fontColor('#CCCCCC');
                         Text.margin({ bottom: 16 });
                     }, Text);
                     Text.pop();
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         Text.create('还没有回忆，点击下方按钮添加吧');
-                        Text.fontSize(14);
+                        Text.fontSize('14fp');
                         Text.fontColor('#999999');
                     }, Text);
                     Text.pop();
@@ -568,7 +687,7 @@ class ProvinceDetail extends ViewPU {
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create(this.formatTime(memory.createTime));
-            Text.fontSize(12);
+            Text.fontSize('12fp');
             Text.fontColor('#999999');
         }, Text);
         Text.pop();
@@ -580,7 +699,7 @@ class ProvinceDetail extends ViewPU {
             // 删除按钮
             Text.create('删除');
             // 删除按钮
-            Text.fontSize(13);
+            Text.fontSize('13fp');
             // 删除按钮
             Text.fontColor('#999999');
             // 删除按钮
@@ -600,7 +719,7 @@ class ProvinceDetail extends ViewPU {
                 this.ifElseBranchUpdateFunction(0, () => {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         Text.create(memory.text);
-                        Text.fontSize(15);
+                        Text.fontSize('15fp');
                         Text.fontColor('#333333');
                         Text.lineHeight(22);
                         Text.width('100%');
@@ -664,12 +783,12 @@ class ProvinceDetail extends ViewPU {
             Row.create();
             Row.width('100%');
             Row.justifyContent(FlexAlign.Center);
-            Row.padding({ top: 12, bottom: 12 });
+            Row.padding({ top: 12, bottom: 4 });
             Row.backgroundColor('#FFF9F0');
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Button.createWithLabel('+ 添加新回忆');
-            Button.fontSize(16);
+            Button.fontSize('16fp');
             Button.fontColor('#FFFFFF');
             Button.backgroundColor('#FF6B6B');
             Button.borderRadius(24);
@@ -679,6 +798,65 @@ class ProvinceDetail extends ViewPU {
         }, Button);
         Button.pop();
         Row.pop();
+    }
+    /** 打开画板按钮 */
+    DrawBoardButton(parent = null) {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Row.create();
+            Row.width('100%');
+            Row.justifyContent(FlexAlign.Center);
+            Row.padding({ top: 4, bottom: 12 });
+            Row.backgroundColor('#FFF9F0');
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Button.createWithLabel('\u{1F58C} 打开画板');
+            Button.fontSize('15fp');
+            Button.fontColor('#FF6B6B');
+            Button.backgroundColor('#FFF0F0');
+            Button.borderRadius(24);
+            Button.width('80%');
+            Button.height(44);
+            Button.borderWidth(1);
+            Button.borderColor('#FF6B6B');
+            Button.onClick(() => {
+                this.openDrawBoard();
+            });
+        }, Button);
+        Button.pop();
+        Row.pop();
+    }
+    /** 画板弹窗内容 */
+    DrawBoardSheetContent(parent = null) {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.width('100%');
+            Column.height('100%');
+        }, Column);
+        {
+            this.observeComponentCreation2((elmtId, isInitialRender) => {
+                if (isInitialRender) {
+                    let componentCall = new DrawBoard(this, { provinceId: this.provinceId, onClose: () => {
+                            this.closeDrawBoard();
+                        } }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/ProvinceDetail.ets", line: 488, col: 7 });
+                    ViewPU.create(componentCall);
+                    let paramsLambda = () => {
+                        return {
+                            provinceId: this.provinceId,
+                            onClose: () => {
+                                this.closeDrawBoard();
+                            }
+                        };
+                    };
+                    componentCall.paramsGenerator_ = paramsLambda;
+                }
+                else {
+                    this.updateStateVarsOfChildByElmtId(elmtId, {
+                        provinceId: this.provinceId
+                    });
+                }
+            }, { name: "DrawBoard" });
+        }
+        Column.pop();
     }
     /** 添加回忆对话框 */
     AddMemoryDialog(parent = null) {
@@ -701,7 +879,7 @@ class ProvinceDetail extends ViewPU {
             // 标题
             Text.create('添加新回忆');
             // 标题
-            Text.fontSize(18);
+            Text.fontSize('18fp');
             // 标题
             Text.fontWeight(FontWeight.Bold);
             // 标题
@@ -719,7 +897,7 @@ class ProvinceDetail extends ViewPU {
             // 文字输入
             TextArea.height(100);
             // 文字输入
-            TextArea.fontSize(14);
+            TextArea.fontSize('14fp');
             // 文字输入
             TextArea.fontColor('#333333');
             // 文字输入
@@ -770,7 +948,7 @@ class ProvinceDetail extends ViewPU {
                                 // 删除按钮
                                 Text.create('\u00D7');
                                 // 删除按钮
-                                Text.fontSize(16);
+                                Text.fontSize('16fp');
                                 // 删除按钮
                                 Text.fontColor('#FFFFFF');
                                 // 删除按钮
@@ -816,7 +994,7 @@ class ProvinceDetail extends ViewPU {
                 this.ifElseBranchUpdateFunction(0, () => {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         Button.createWithLabel(`选择照片（${this.savedPhotoUris.length}/3）`);
-                        Button.fontSize(13);
+                        Button.fontSize('13fp');
                         Button.fontColor('#FF6B6B');
                         Button.backgroundColor('#FFF0F0');
                         Button.borderRadius(8);
@@ -843,7 +1021,7 @@ class ProvinceDetail extends ViewPU {
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Button.createWithLabel('取消');
-            Button.fontSize(14);
+            Button.fontSize('14fp');
             Button.fontColor('#666666');
             Button.backgroundColor('#F0F0F0');
             Button.borderRadius(8);
@@ -855,7 +1033,7 @@ class ProvinceDetail extends ViewPU {
         Button.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Button.createWithLabel('添加');
-            Button.fontSize(14);
+            Button.fontSize('14fp');
             Button.fontColor('#FFFFFF');
             Button.backgroundColor('#FF6B6B');
             Button.borderRadius(8);
@@ -888,7 +1066,7 @@ class ProvinceDetail extends ViewPU {
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create('确认删除');
-            Text.fontSize(18);
+            Text.fontSize('18fp');
             Text.fontWeight(FontWeight.Bold);
             Text.fontColor('#333333');
             Text.margin({ bottom: 12 });
@@ -896,7 +1074,7 @@ class ProvinceDetail extends ViewPU {
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create('删除后无法恢复，是否确认？');
-            Text.fontSize(14);
+            Text.fontSize('14fp');
             Text.fontColor('#666666');
             Text.margin({ bottom: 24 });
         }, Text);
@@ -907,7 +1085,7 @@ class ProvinceDetail extends ViewPU {
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Button.createWithLabel('取消');
-            Button.fontSize(14);
+            Button.fontSize('14fp');
             Button.fontColor('#666666');
             Button.backgroundColor('#F0F0F0');
             Button.borderRadius(8);
@@ -919,7 +1097,7 @@ class ProvinceDetail extends ViewPU {
         Button.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Button.createWithLabel('删除');
-            Button.fontSize(14);
+            Button.fontSize('14fp');
             Button.fontColor('#FFFFFF');
             Button.backgroundColor('#FF6B6B');
             Button.borderRadius(8);
@@ -942,7 +1120,7 @@ class ProvinceDetail extends ViewPU {
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create(this.toastMsg);
-            Text.fontSize(14);
+            Text.fontSize('14fp');
             Text.fontColor('#FFFFFF');
             Text.padding({ left: 20, right: 20, top: 10, bottom: 10 });
             Text.backgroundColor('#CC333333');

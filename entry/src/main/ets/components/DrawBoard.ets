@@ -1,14 +1,14 @@
 /**
  * DrawBoard.ets - 画板主组件
  * 功能：
- * 1. Canvas 手写绘制（鼠标/手指）
+ * 1. Canvas 手写绘制（鼠标/手指）- 使用 priorityGesture(PanGesture) 防止 bindSheet 拖拽冲突
  * 2. 画笔颜色切换（6种预设颜色）
  * 3. 笔触粗细切换（3档）
  * 4. 橡皮擦模式
  * 5. 清空画布（二次确认）
  * 6. 添加照片到画布
  * 7. 数据保存与恢复
- * 8. 适配一多：使用百分比/fp/vp 相对单位
+ * 8. 一多适配：工具栏使用 layoutWeight 自适应宽度，Canvas 使用百分比布局
  */
 import { DrawDataManager } from '../common/DrawDataManager';
 import photoAccessHelper from '@ohos.file.photoAccessHelper';
@@ -34,6 +34,9 @@ const PRESET_COLORS: string[] = ['#000000', '#FF0000', '#0000FF', '#00AA00', '#F
 export struct DrawBoard {
   // 省份 ID，用于绑定画板数据
   @Prop provinceId: string = '';
+
+  // 关闭回调
+  onClose: () => void = () => {};
 
   // 画板数据管理器
   private drawDataManager: DrawDataManager = DrawDataManager.getInstance();
@@ -156,64 +159,6 @@ export struct DrawBoard {
     return bytes.buffer;
   }
 
-  // ==================== 绘制逻辑 ====================
-
-  /** 处理触摸事件 */
-  handleTouchEvent(event: TouchEvent): void {
-    const touch = event.touches[0];
-    const x = touch.x;
-    const y = touch.y;
-
-    switch (event.type) {
-      case TouchType.Down:
-        this.isDrawing = true;
-        this.lastX = x;
-        this.lastY = y;
-        this.context.beginPath();
-        this.context.moveTo(x, y);
-        break;
-
-      case TouchType.Move:
-        if (!this.isDrawing) {
-          return;
-        }
-        // 设置绘制样式
-        if (this.currentTool === DrawTool.ERASER) {
-          this.context.globalCompositeOperation = 'destination-out';
-          this.context.strokeStyle = 'rgba(0,0,0,1)';
-          this.context.lineWidth = this.currentStrokeWidth * 3; // 橡皮擦稍大
-        } else {
-          this.context.globalCompositeOperation = 'source-over';
-          this.context.strokeStyle = this.currentColor;
-          this.context.lineWidth = this.currentStrokeWidth;
-        }
-        this.context.lineCap = 'round';
-        this.context.lineJoin = 'round';
-
-        // 使用二次贝塞尔曲线使笔迹更平滑
-        const midX = (this.lastX + x) / 2;
-        const midY = (this.lastY + y) / 2;
-        this.context.quadraticCurveTo(this.lastX, this.lastY, midX, midY);
-        this.context.stroke();
-
-        this.lastX = x;
-        this.lastY = y;
-        break;
-
-      case TouchType.Up:
-      case TouchType.Cancel:
-        if (this.isDrawing) {
-          this.context.lineTo(x, y);
-          this.context.stroke();
-          this.context.closePath();
-          this.isDrawing = false;
-          // 恢复默认合成模式
-          this.context.globalCompositeOperation = 'source-over';
-        }
-        break;
-    }
-  }
-
   // ==================== 工具操作 ====================
 
   /** 切换画笔工具 */
@@ -299,7 +244,33 @@ export struct DrawBoard {
 
   build() {
     Column() {
-      // Canvas 绘制区域
+      // 顶部标题栏 + 关闭按钮
+      Row() {
+        Text('画板')
+          .fontSize('18fp')
+          .fontWeight(FontWeight.Bold)
+          .fontColor('#333333')
+          .layoutWeight(1)
+          .margin({ left: 16 })
+
+        Button('关闭')
+          .fontSize('14fp')
+          .fontColor('#FF6B6B')
+          .backgroundColor('#FFF0F0')
+          .borderRadius(16)
+          .height(32)
+          .padding({ left: 16, right: 16 })
+          .margin({ right: 16 })
+          .onClick(() => {
+            this.onClose();
+          })
+      }
+      .width('100%')
+      .height(48)
+      .alignItems(VerticalAlign.Center)
+      .backgroundColor('#FAFAFA')
+
+      // Canvas 绘制区域 - 使用 priorityGesture(PanGesture) 拦截所有方向手势，防止 bindSheet 拖拽
       Canvas(this.context)
         .width('100%')
         .layoutWeight(1)
@@ -308,9 +279,57 @@ export struct DrawBoard {
           this.canvasWidth = this.context.width;
           this.canvasHeight = this.context.height;
         })
-        .onTouch((event: TouchEvent) => {
-          this.handleTouchEvent(event);
+        .onAreaChange((oldValue: Area, newValue: Area) => {
+          const newWidth = newValue.width as number;
+          const newHeight = newValue.height as number;
+          if (newWidth > 0 && newHeight > 0) {
+            this.canvasWidth = newWidth;
+            this.canvasHeight = newHeight;
+          }
         })
+        .priorityGesture(
+          PanGesture({ direction: PanDirection.All, distance: 1 })
+            .onActionStart((event: GestureEvent) => {
+              this.isDrawing = true;
+              this.lastX = event.fingerList[0].localX;
+              this.lastY = event.fingerList[0].localY;
+              this.context.beginPath();
+              this.context.moveTo(this.lastX, this.lastY);
+            })
+            .onActionUpdate((event: GestureEvent) => {
+              const x = event.fingerList[0].localX;
+              const y = event.fingerList[0].localY;
+              if (!this.isDrawing) {
+                return;
+              }
+              if (this.currentTool === DrawTool.ERASER) {
+                this.context.globalCompositeOperation = 'destination-out';
+                this.context.strokeStyle = 'rgba(0,0,0,1)';
+                this.context.lineWidth = this.currentStrokeWidth * 3;
+              } else {
+                this.context.globalCompositeOperation = 'source-over';
+                this.context.strokeStyle = this.currentColor;
+                this.context.lineWidth = this.currentStrokeWidth;
+              }
+              this.context.lineCap = 'round';
+              this.context.lineJoin = 'round';
+              const midX = (this.lastX + x) / 2;
+              const midY = (this.lastY + y) / 2;
+              this.context.quadraticCurveTo(this.lastX, this.lastY, midX, midY);
+              this.context.stroke();
+              this.lastX = x;
+              this.lastY = y;
+            })
+            .onActionEnd((event: GestureEvent) => {
+              if (this.isDrawing) {
+                this.context.lineTo(this.lastX, this.lastY);
+                this.context.stroke();
+                this.context.closePath();
+                this.isDrawing = false;
+                this.context.globalCompositeOperation = 'source-over';
+              }
+            })
+        )
 
       // 工具栏
       this.ToolBar()
@@ -320,7 +339,7 @@ export struct DrawBoard {
     .backgroundColor('#FFFFFF')
   }
 
-  /** 底部工具栏 - 使用 fp/vp 相对单位适配一多 */
+  /** 底部工具栏 - 一多适配：layoutWeight 自适应宽度 */
   @Builder
   ToolBar() {
     Column() {
@@ -329,131 +348,131 @@ export struct DrawBoard {
         .color('#E0E0E0')
         .width('100%')
 
-      Scroll() {
-        Row() {
-          // 画笔按钮
-          Column() {
-            Text('\u270F')  // ✏
-              .fontSize(18)
-              .fontColor(this.currentTool === DrawTool.PEN ? '#FF6B6B' : '#666666')
-            Text('画笔')
-              .fontSize(10)
-              .fontColor(this.currentTool === DrawTool.PEN ? '#FF6B6B' : '#999999')
-              .margin({ top: 2 })
-          }
-          .width(44)
-          .justifyContent(FlexAlign.Center)
-          .onClick(() => this.switchTool(DrawTool.PEN))
-
-          // 颜色选择
-          Row() {
-            ForEach(PRESET_COLORS, (color: string) => {
-              Circle()
-                .width(20)
-                .height(20)
-                .fill(color)
-                .stroke(this.currentColor === color && this.currentTool === DrawTool.PEN ? '#FF6B6B' : '#E0E0E0')
-                .strokeWidth(this.currentColor === color && this.currentTool === DrawTool.PEN ? 2.5 : 1)
-                .margin({ left: 3, right: 3 })
-                .onClick(() => this.switchColor(color))
-            }, (color: string) => color)
-          }
-          .margin({ left: 6, right: 6 })
-
-          // 笔触粗细
-          Row() {
-            // 细
-            Column() {
-              Circle()
-                .width(6)
-                .height(6)
-                .fill(this.currentStrokeWidth === StrokeWidth.THIN ? '#FF6B6B' : '#666666')
-            }
-            .width(28)
-            .height(28)
-            .justifyContent(FlexAlign.Center)
-            .borderRadius(4)
-            .backgroundColor(this.currentStrokeWidth === StrokeWidth.THIN ? '#FFF0F0' : Color.Transparent)
-            .onClick(() => this.switchStrokeWidth(StrokeWidth.THIN))
-
-            // 中
-            Column() {
-              Circle()
-                .width(10)
-                .height(10)
-                .fill(this.currentStrokeWidth === StrokeWidth.MEDIUM ? '#FF6B6B' : '#666666')
-            }
-            .width(28)
-            .height(28)
-            .justifyContent(FlexAlign.Center)
-            .borderRadius(4)
-            .backgroundColor(this.currentStrokeWidth === StrokeWidth.MEDIUM ? '#FFF0F0' : Color.Transparent)
-            .onClick(() => this.switchStrokeWidth(StrokeWidth.MEDIUM))
-
-            // 粗
-            Column() {
-              Circle()
-                .width(14)
-                .height(14)
-                .fill(this.currentStrokeWidth === StrokeWidth.THICK ? '#FF6B6B' : '#666666')
-            }
-            .width(28)
-            .height(28)
-            .justifyContent(FlexAlign.Center)
-            .borderRadius(4)
-            .backgroundColor(this.currentStrokeWidth === StrokeWidth.THICK ? '#FFF0F0' : Color.Transparent)
-            .onClick(() => this.switchStrokeWidth(StrokeWidth.THICK))
-          }
-          .margin({ left: 4, right: 4 })
-
-          // 橡皮擦
-          Column() {
-            Text('\u{1F9F9}')  // 🧹
-              .fontSize(18)
-            Text('橡皮')
-              .fontSize(10)
-              .fontColor(this.currentTool === DrawTool.ERASER ? '#FF6B6B' : '#999999')
-              .margin({ top: 2 })
-          }
-          .width(44)
-          .justifyContent(FlexAlign.Center)
-          .onClick(() => this.switchTool(DrawTool.ERASER))
-
-          // 清空
-          Column() {
-            Text('\u{1F5D1}')  // 🗑️
-              .fontSize(18)
-            Text('清空')
-              .fontSize(10)
-              .fontColor('#999999')
-              .margin({ top: 2 })
-          }
-          .width(44)
-          .justifyContent(FlexAlign.Center)
-          .onClick(() => this.clearCanvas())
-
-          // 添加照片
-          Column() {
-            Text('\u{1F5BC}')  // 🖼️
-              .fontSize(18)
-            Text('照片')
-              .fontSize(10)
-              .fontColor('#999999')
-              .margin({ top: 2 })
-          }
-          .width(44)
-          .justifyContent(FlexAlign.Center)
-          .onClick(() => this.addPhoto())
+      // 第一行：工具按钮 + 笔触粗细
+      Row() {
+        // 画笔按钮
+        Column() {
+          Text('\u270F')  // ✏
+            .fontSize('18fp')
+            .fontColor(this.currentTool === DrawTool.PEN ? '#FF6B6B' : '#666666')
+          Text('画笔')
+            .fontSize('10fp')
+            .fontColor(this.currentTool === DrawTool.PEN ? '#FF6B6B' : '#999999')
+            .margin({ top: 2 })
         }
-        .width('100%')
-        .height(56)
-        .justifyContent(FlexAlign.SpaceEvenly)
+        .layoutWeight(1)
+        .justifyContent(FlexAlign.Center)
+        .onClick(() => this.switchTool(DrawTool.PEN))
+
+        // 橡皮擦
+        Column() {
+          Text('\u{1F9F9}')  // 🧹
+            .fontSize('18fp')
+          Text('橡皮')
+            .fontSize('10fp')
+            .fontColor(this.currentTool === DrawTool.ERASER ? '#FF6B6B' : '#999999')
+            .margin({ top: 2 })
+        }
+        .layoutWeight(1)
+        .justifyContent(FlexAlign.Center)
+        .onClick(() => this.switchTool(DrawTool.ERASER))
+
+        // 笔触粗细选择
+        Row() {
+          // 细
+          Column() {
+            Circle()
+              .width(6)
+              .height(6)
+              .fill(this.currentStrokeWidth === StrokeWidth.THIN ? '#FF6B6B' : '#666666')
+          }
+          .width(28)
+          .height(28)
+          .justifyContent(FlexAlign.Center)
+          .borderRadius(4)
+          .backgroundColor(this.currentStrokeWidth === StrokeWidth.THIN ? '#FFF0F0' : Color.Transparent)
+          .onClick(() => this.switchStrokeWidth(StrokeWidth.THIN))
+
+          // 中
+          Column() {
+            Circle()
+              .width(10)
+              .height(10)
+              .fill(this.currentStrokeWidth === StrokeWidth.MEDIUM ? '#FF6B6B' : '#666666')
+          }
+          .width(28)
+          .height(28)
+          .justifyContent(FlexAlign.Center)
+          .borderRadius(4)
+          .backgroundColor(this.currentStrokeWidth === StrokeWidth.MEDIUM ? '#FFF0F0' : Color.Transparent)
+          .onClick(() => this.switchStrokeWidth(StrokeWidth.MEDIUM))
+
+          // 粗
+          Column() {
+            Circle()
+              .width(14)
+              .height(14)
+              .fill(this.currentStrokeWidth === StrokeWidth.THICK ? '#FF6B6B' : '#666666')
+          }
+          .width(28)
+          .height(28)
+          .justifyContent(FlexAlign.Center)
+          .borderRadius(4)
+          .backgroundColor(this.currentStrokeWidth === StrokeWidth.THICK ? '#FFF0F0' : Color.Transparent)
+          .onClick(() => this.switchStrokeWidth(StrokeWidth.THICK))
+        }
+        .layoutWeight(1)
+        .justifyContent(FlexAlign.Center)
         .alignItems(VerticalAlign.Center)
-        .padding({ left: 8, right: 8 })
+
+        // 清空
+        Column() {
+          Text('\u{1F5D1}')  // 🗑️
+            .fontSize('18fp')
+          Text('清空')
+            .fontSize('10fp')
+            .fontColor('#999999')
+            .margin({ top: 2 })
+        }
+        .layoutWeight(1)
+        .justifyContent(FlexAlign.Center)
+        .onClick(() => this.clearCanvas())
+
+        // 添加照片
+        Column() {
+          Text('\u{1F5BC}')  // 🖼️
+            .fontSize('18fp')
+          Text('照片')
+            .fontSize('10fp')
+            .fontColor('#999999')
+            .margin({ top: 2 })
+        }
+        .layoutWeight(1)
+        .justifyContent(FlexAlign.Center)
+        .onClick(() => this.addPhoto())
       }
-      .scrollable(ScrollDirection.Horizontal)
       .width('100%')
-      .scrollBar(BarState.Off)
+      .height(56)
+      .justifyContent(FlexAlign.SpaceEvenly)
+      .alignItems(VerticalAlign.Center)
+
+      // 第二行：颜色选择
+      Row() {
+        ForEach(PRESET_COLORS, (color: string) => {
+          Circle()
+            .width(20)
+            .height(20)
+            .fill(color)
+            .stroke(this.currentColor === color && this.currentTool === DrawTool.PEN ? '#FF6B6B' : '#E0E0E0')
+            .strokeWidth(this.currentColor === color && this.currentTool === DrawTool.PEN ? 2.5 : 1)
+            .margin({ left: 6, right: 6 })
+            .onClick(() => this.switchColor(color))
+        }, (color: string) => color)
+      }
+      .width('100%')
+      .justifyContent(FlexAlign.Center)
+      .alignItems(VerticalAlign.Center)
+      .padding({ top: 4, bottom: 4 })
     }
     .width('100%')
 
@@ -469,19 +488,19 @@ export struct DrawBoard {
     Column() {
       Column() {
         Text('确认清空')
-          .fontSize(18)
+          .fontSize('18fp')
           .fontWeight(FontWeight.Bold)
           .fontColor('#333333')
           .margin({ bottom: 12 })
 
         Text('清空后画布内容将无法恢复，是否确认？')
-          .fontSize(14)
+          .fontSize('14fp')
           .fontColor('#666666')
           .margin({ bottom: 24 })
 
         Row() {
           Button('取消')
-            .fontSize(14)
+            .fontSize('14fp')
             .fontColor('#666666')
             .backgroundColor('#F0F0F0')
             .borderRadius(8)
@@ -491,7 +510,7 @@ export struct DrawBoard {
             })
 
           Button('清空')
-            .fontSize(14)
+            .fontSize('14fp')
             .fontColor('#FFFFFF')
             .backgroundColor('#FF6B6B')
             .borderRadius(8)

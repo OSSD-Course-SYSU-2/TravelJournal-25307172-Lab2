@@ -36,26 +36,26 @@ export struct BadgePopup {
       Column() {
         // 大号 Emoji
         Text(this.popupData?.badge.emoji ?? '')
-          .fontSize(80)
+          .fontSize('80fp')
           .margin({ top: 32, bottom: 16 })
 
         // 奖牌名称
         Text(this.popupData?.badge.name ?? '')
-          .fontSize(24)
+          .fontSize('24fp')
           .fontWeight(FontWeight.Bold)
           .fontColor('#333333')
           .margin({ bottom: 8 })
 
         // 解锁提示
         Text('奖牌解锁！')
-          .fontSize(16)
+          .fontSize('16fp')
           .fontColor('#F5A623')
           .fontWeight(FontWeight.Bold)
           .margin({ bottom: 12 })
 
         // 所需省份列表
         Text(this.popupData?.provinceNames.join('、') ?? '')
-          .fontSize(13)
+          .fontSize('13fp')
           .fontColor('#666666')
           .maxLines(3)
           .textOverflow({ overflow: TextOverflow.Ellipsis })
