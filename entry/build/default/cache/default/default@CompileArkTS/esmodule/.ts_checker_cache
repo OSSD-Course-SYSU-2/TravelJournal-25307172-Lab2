@@ -108,7 +108,7 @@
       "error": false
     },
     "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\common\\ContinuationHelper.ets": {
-      "mtimeMs": 1781600315279.697,
+      "mtimeMs": 1782144678749.9006,
       "children": [
         "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.continuation.continuationManager.d.ts",
         "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts"
@@ -124,7 +124,7 @@
       ]
     },
     "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\entryability\\EntryAbility.ets": {
-      "mtimeMs": 1781600689235.2415,
+      "mtimeMs": 1782144678755.902,
       "children": [
         "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.UIAbility.d.ts",
         "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.AbilityConstant.d.ts",
@@ -521,7 +521,8 @@
         "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimodalInput.pointer.d.ts",
         "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.file.photoAccessHelper.d.ts",
         "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader\\declarations\\common.d.ts",
-        "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.webview.d.ts"
+        "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.web.webview.d.ts",
+        "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\components\\DrawBoard.ets"
       ],
       "error": false
     },
@@ -773,7 +774,9 @@
         "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\common\\FileHelper.ets",
         "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\pages\\Index.ets",
         "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\pages\\ProvinceDetail.ets",
-        "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\common\\BadgeManager.ets"
+        "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\common\\BadgeManager.ets",
+        "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\common\\DrawDataManager.ets",
+        "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\components\\DrawBoard.ets"
       ],
       "error": false
     },
@@ -1561,7 +1564,8 @@
       ],
       "parent": [
         "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\model\\DataModel.ets",
-        "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\common\\BadgeManager.ets"
+        "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\common\\BadgeManager.ets",
+        "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\common\\DrawDataManager.ets"
       ],
       "error": false
     },
@@ -1572,7 +1576,8 @@
         "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.util.stream.d.ts"
       ],
       "parent": [
-        "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\common\\FileHelper.ets"
+        "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\common\\FileHelper.ets",
+        "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\components\\DrawBoard.ets"
       ],
       "error": false
     },
@@ -1638,7 +1643,7 @@
       "error": false
     },
     "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\pages\\Index.ets": {
-      "mtimeMs": 1781765812934.5173,
+      "mtimeMs": 1782149284557.3525,
       "children": [
         "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts",
         "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.router.d.ts",
@@ -1664,18 +1669,22 @@
         "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.dataSharePredicates.d.ts"
       ],
       "parent": [
-        "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\pages\\ProvinceDetail.ets"
+        "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\pages\\ProvinceDetail.ets",
+        "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\components\\DrawBoard.ets"
       ],
       "error": false
     },
     "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\pages\\ProvinceDetail.ets": {
-      "mtimeMs": 1781713204797.3403,
+      "mtimeMs": 1782149241424.0354,
       "children": [
         "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.router.d.ts",
         "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts",
+        "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.display.d.ts",
         "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\model\\DataModel.ets",
         "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\common\\FileHelper.ets",
         "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\common\\ContinuationHelper.ets",
+        "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\common\\DrawDataManager.ets",
+        "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\components\\DrawBoard.ets",
         "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.file.photoAccessHelper.d.ts"
       ],
       "parent": [],
@@ -2205,7 +2214,9 @@
         "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.graphics.hdrCapability.d.ts"
       ],
       "parent": [
-        "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\pages\\Index.ets"
+        "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\pages\\Index.ets",
+        "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\pages\\ProvinceDetail.ets",
+        "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\components\\DrawBoard.ets"
       ],
       "error": false
     },
@@ -2218,7 +2229,7 @@
       "error": false
     },
     "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\common\\BadgeManager.ets": {
-      "mtimeMs": 1781767017134.2427,
+      "mtimeMs": 1782125311986.9534,
       "children": [
         "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.preferences.d.ts",
         "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts"
@@ -2230,12 +2241,36 @@
       "error": false
     },
     "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\pages\\Badges.ets": {
-      "mtimeMs": 1781774866262.1284,
+      "mtimeMs": 1782144678757.9043,
       "children": [
         "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\common\\BadgeManager.ets"
       ],
       "parent": [
         "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\pages\\Index.ets"
+      ],
+      "error": false
+    },
+    "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\common\\DrawDataManager.ets": {
+      "mtimeMs": 1782144678750.9023,
+      "children": [
+        "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.preferences.d.ts",
+        "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts"
+      ],
+      "parent": [
+        "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\pages\\ProvinceDetail.ets",
+        "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\components\\DrawBoard.ets"
+      ],
+      "error": false
+    },
+    "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\components\\DrawBoard.ets": {
+      "mtimeMs": 1782149191842.8977,
+      "children": [
+        "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\common\\DrawDataManager.ets",
+        "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.file.photoAccessHelper.d.ts",
+        "E:\\Program Files\\Huawei\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimedia.image.d.ts"
+      ],
+      "parent": [
+        "E:\\wwwmm\\Documents\\OSS\\practice\\TravelJournal\\entry\\src\\main\\ets\\pages\\ProvinceDetail.ets"
       ],
       "error": false
     }
