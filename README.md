@@ -208,6 +208,8 @@ borderRadius 不会随屏幕缩放，平板上圆角比例失调。
 
 ### Canvas 绘图
 
+> **方案选型说明**：项目最初计划使用华为 Map Kit（`@hms.core.mapKit`）展示中国地图，并已成功完成调用。但发现 Map Kit 渲染的地图组件只能在真机上显示，模拟器和预览器中均无法呈现，导致开发调试效率极低。因此改为当前方案：使用 Canvas 自绘中国省份地图，以椭圆表示各省份，大小按真实面积比例缩放。该方案在模拟器、预览器和真机上均可正常显示和调试。
+
 - 椭圆碰撞检测算法（`pointInEllipse`）判断触摸点是否在省份区域内
 - 画板使用 `priorityGesture(PanGesture)` 拦截手势，防止与 `bindSheet` 拖拽冲突
 - 使用 `quadraticCurveTo` 实现平滑曲线绘制
